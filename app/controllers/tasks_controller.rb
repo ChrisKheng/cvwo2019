@@ -1,4 +1,6 @@
 class TasksController < ApplicationController
+  before_action :load_task, only: %i[show]
+
   def new
     @task = Task.new
   end
@@ -13,7 +15,14 @@ class TasksController < ApplicationController
     end
   end
 
+  def show
+  end
+
   private
+
+  def load_task
+    @task = Task.find(params[:id])
+  end
 
   def task_param
     params.require(:task).permit(:title, :description)
