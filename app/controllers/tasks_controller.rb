@@ -1,5 +1,5 @@
 class TasksController < ApplicationController
-  before_action :load_task, only: %i[show]
+  before_action :load_task, only: %i[show edit update]
 
   def new
     @task = Task.new
@@ -18,8 +18,20 @@ class TasksController < ApplicationController
   def show
   end
 
+  def edit
+  end
+
   def index
     @tasks = Task.all
+  end
+
+  def update
+    if @task.update(task_param)
+      flash[:notice] = 'Your task is updated'
+      redirect_to task_path(@task)
+    else
+      render 'edit'
+    end
   end
 
   private

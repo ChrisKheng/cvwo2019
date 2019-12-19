@@ -9,6 +9,7 @@
   <tr>
     <td><%= task.title %></td>
     <td><%= task.description %></td>
+    <td><%= link_to 'Edit', edit_task_path(task) %></td>
   </tr>
   <% end %>
 </table>
