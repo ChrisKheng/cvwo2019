@@ -18,6 +18,10 @@ class TasksController < ApplicationController
   def show
   end
 
+  def index
+    @tasks = Task.all
+  end
+
   private
 
   def load_task
