@@ -1,8 +1,15 @@
 class TasksController < ApplicationController
-  before_action :load_task, only: %i[show edit update]
+  before_action :load_task, only: %i[show edit update destroy]
+
+  def index
+    @tasks = Task.all
+  end
 
   def new
     @task = Task.new
+  end
+
+  def edit
   end
 
   def create
@@ -15,16 +22,6 @@ class TasksController < ApplicationController
     end
   end
 
-  def show
-  end
-
-  def edit
-  end
-
-  def index
-    @tasks = Task.all
-  end
-
   def update
     if @task.update(task_param)
       flash[:notice] = 'Your task is updated'
@@ -32,6 +29,15 @@ class TasksController < ApplicationController
     else
       render 'edit'
     end
+  end
+
+  def show
+  end
+
+  def destroy
+    @task.destroy
+    flash[:notice] = 'Task is deleted'
+    redirect_to tasks_path
   end
 
   private
