@@ -1,24 +1,5 @@
-# README
+# DoIT
+Hey there! DoIT is a todo manager web application which aims to help the users to keep track of their tasks easily. It is developed using Ruby on Rails and React. Click [here](https://arcane-sea-94709.herokuapp.com) to use the app!
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
-
-Things you may want to cover:
-
-* Ruby version
-
-* System dependencies
-
-* Configuration
-
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+Name: Kheng Yau Dong
+Matriculation Number: A0184686L
