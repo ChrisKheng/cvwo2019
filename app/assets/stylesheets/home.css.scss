@@ -1,0 +1,11 @@
+.home-title-jumbotron {
+  background-image: asset-url('Home_Jumbotron.jpg');
+  background-size: cover; /* Fit width */
+  height: 550px;
+  text-align: center; /* Applies to button too */
+}
+
+.home-title-jumbotron button {
+  margin: 25px;
+}
+

@@ -1,11 +1,16 @@
 import React from 'react'
 import 'bootstrap/dist/css/bootstrap.min.css';
-import Home from "./pages/home/Home"
+import {BrowserRouter as Router} from "react-router-dom";
+import Routes from "./Routes";
+import NavigationBar from "./global/NavigationBar";
 
 class App extends React.Component {
     render() {
         return (
-            <Home/>
+            <Router>
+                <NavigationBar/>
+                <Routes/>
+            </Router>
         )
     }
 }
