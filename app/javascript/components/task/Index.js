@@ -1,26 +1,37 @@
-import React from 'react'
-import axios from 'axios'
+import React from 'react';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import Card from "react-bootstrap/Card";
+import CardDeck from "react-bootstrap/CardDeck";
 
 class Index extends React.Component {
     state = {
         tasks: []
     }
 
-    componentDidMount() {
-        axios.get("http://localhost:3000/tasks")
-            .then(result => {
-                console.log(result.data);
-            })
+    // To initialise state
+    constructor(props) {
+        super(props);
+        this.state.tasks = props.tasks;
     }
 
     render() {
         return (
             <React.Fragment>
-                <ul>
-                </ul>
+                <CardDeck>
+                    {this.state.tasks.map((task) => {
+                        return (
+                            <Card key={task.id}>
+                                <Card.Body>
+                                    <Card.Title>{task.title}</Card.Title>
+                                    <Card.Text>{task.description}</Card.Text>
+                                </Card.Body>
+                            </Card>
+                        )
+                    })}
+                </CardDeck>
             </React.Fragment>
         )
     }
 }
 
-export default React
+export default Index
