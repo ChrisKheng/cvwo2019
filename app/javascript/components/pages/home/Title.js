@@ -7,7 +7,7 @@ const Title = () => {
         <Jumbotron className="home-title-jumbotron">
             <h1>Welcome!</h1>
             <Button href="">View Tasks</Button>
-            <Button href="">Create Task</Button>
+            <Button href="/tasks/new">Create Task</Button>
         </Jumbotron>
     )
 }
