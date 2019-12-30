@@ -29,12 +29,12 @@ class TaskForm extends React.Component {
 
     handleSubmit = (event) => {
         event.preventDefault();
-        axios.post("/tasks", {
-            task: {...this.state}
-        }).then(result => {
-            console.log(result);
-            }
-        )
+        const task = {
+            title: this.state.title,
+            description: this.state.description
+        }
+
+        this.props.handler(task);
     }
 
     render() {

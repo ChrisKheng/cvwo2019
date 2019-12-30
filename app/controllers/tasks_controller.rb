@@ -16,18 +16,17 @@ class TasksController < ApplicationController
     @task = Task.new(task_param)
     if @task.save
       flash[:notice] = 'Your task is successfully saved!'
-      redirect_to task_path(@task)
+      render json: @task
     else
-      render 'new'
+      render 'new' # Change this to show error messages in React
     end
   end
 
   def update
     if @task.update(task_param)
       flash[:notice] = 'Your task is updated'
-      redirect_to task_path(@task)
     else
-      render 'edit'
+      render 'edit' # Change this to show error messages in React
     end
   end
 
@@ -37,7 +36,6 @@ class TasksController < ApplicationController
   def destroy
     @task.destroy
     flash[:notice] = 'Task is deleted'
-    redirect_to tasks_path
   end
 
   private

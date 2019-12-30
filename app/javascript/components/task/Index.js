@@ -1,11 +1,16 @@
 import React from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Card from "react-bootstrap/Card";
-import CardDeck from "react-bootstrap/CardDeck";
+import CardColumns from "react-bootstrap/CardColumns";
+import NavigationBar from "./NavigationBar";
+import NewTask from "./NewTask";
+import {AlertNewTaskSuccess} from "./Alerts";
 
 class Index extends React.Component {
     state = {
-        tasks: []
+        tasks: [],
+        showNewTask: false,
+        showNewTaskSuccess: false
     }
 
     // To initialise state
@@ -14,10 +19,34 @@ class Index extends React.Component {
         this.state.tasks = props.tasks;
     }
 
+    handleOnClick = () => {
+        this.setState({showNewTask: !this.state.showNewTask});
+    }
+
+    handleNewTaskSubmitted = (task) => {
+        const newTasks = [...this.state.tasks];
+        newTasks.push(task);
+        this.setState({
+            tasks: newTasks,
+            showNewTask: false,
+            showNewTaskSuccess: true
+        });
+    }
+
+    handleAlertNewTaskClosed = () => {
+        this.setState({showNewTaskSuccess: false});
+    }
+
     render() {
         return (
             <React.Fragment>
-                <CardDeck>
+                <NavigationBar/>
+                <button type="button" onClick={this.handleOnClick.bind(this)}>Toggle</button>
+                <NewTask show={this.state.showNewTask} handleShowChanged={this.handleOnClick.bind(this)}
+                         handleNewTask={this.handleNewTaskSubmitted.bind(this)}/>
+                <AlertNewTaskSuccess show={this.state.showNewTaskSuccess}
+                                     handler={this.handleAlertNewTaskClosed.bind(this)}/>
+                <CardColumns className="dashboard">
                     {this.state.tasks.map((task) => {
                         return (
                             <Card key={task.id}>
@@ -28,7 +57,7 @@ class Index extends React.Component {
                             </Card>
                         )
                     })}
-                </CardDeck>
+                </CardColumns>
             </React.Fragment>
         )
     }
