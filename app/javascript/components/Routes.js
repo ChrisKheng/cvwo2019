@@ -7,8 +7,8 @@ import TaskForm from "./task/TaskForm";
 const Routes = () => {
     return (
         <div>
-            <Route exact path = "/" render = {() => <Home/>}></Route>
-            <Route path = "/about" render = {() => <About/>}></Route>
+            <Route exact path = "/" render = {() => <Home/>}/>
+            <Route path = "/about" render = {() => <About/>}/>
         </div>
     )
 }

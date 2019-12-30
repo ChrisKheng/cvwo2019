@@ -4,8 +4,10 @@ import Form from "react-bootstrap/Form";
 import FormGroup from "react-bootstrap/FormGroup";
 import Button from "react-bootstrap/Button";
 
-const csrfToken = document.querySelector('[name=csrf-token]').content
-axios.defaults.headers.common['X-CSRF-TOKEN'] = csrfToken
+// To insert crsf token into every axios HTTP request so that Rails API won't complain that
+// there's no CSRF token when submitting the form.
+const csrfToken = document.querySelector('[name=csrf-token]').content;
+axios.defaults.headers.common['X-CSRF-TOKEN'] = csrfToken;
 
 class TaskForm extends React.Component {
     state = {
@@ -27,7 +29,7 @@ class TaskForm extends React.Component {
 
     handleSubmit = (event) => {
         event.preventDefault();
-        axios.post("http://localhost:3000/tasks", {
+        axios.post("/tasks", {
             task: {...this.state}
         }).then(result => {
             console.log(result);
