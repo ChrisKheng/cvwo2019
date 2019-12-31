@@ -34,11 +34,15 @@ class TaskForm extends React.Component {
             description: this.state.description
         }
 
-        this.props.handler(task);
+        this.props.handleFormData(task);
     }
 
     render() {
-        return (
+        if (this.props.show === false) {
+            return null;
+        }
+
+        const form = (
             <Form onSubmit={this.handleSubmit}>
                 <FormGroup>
                     <Form.Label>Title</Form.Label>
@@ -54,6 +58,16 @@ class TaskForm extends React.Component {
                     Submit
                 </Button>
             </Form>
+        )
+
+        return (
+            <div className="myModal">
+                <section className="modal-main">
+                    <button type="button" onClick={this.props.handleShowChanged}>Close</button>
+                    <h1>{this.props.title}</h1>
+                    {form}
+                </section>
+            </div>
         )
     }
 }
