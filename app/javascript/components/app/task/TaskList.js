@@ -12,6 +12,7 @@ const TaskList = (props) => {
                     <Card.Body>
                         <Card.Title>{task.title}</Card.Title>
                         <Card.Text>{task.description}</Card.Text>
+                        <Card.Link href="">Delete</Card.Link>
                     </Card.Body>
                 </Card>
             )
