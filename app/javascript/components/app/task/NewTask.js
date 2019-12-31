@@ -1,7 +1,8 @@
 import React from 'react'
+import axios from "axios";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import TaskForm from "./TaskForm";
-import axios from "axios";
+import Modal from "../../utilities/Modal"
 
 class NewTask extends React.Component {
     handleSubmit = (newTask) => {
@@ -11,13 +12,17 @@ class NewTask extends React.Component {
         }).then(result => {
                 this.props.handleNewTask(result.data);
             }
-        ).catch();
+        ).catch((error) => {
+            this.props.handleNewTaskFailure(error.message);
+        })
     }
 
     render() {
         return (
-            <TaskForm title="New Task" show={this.props.show} handleShowChanged={this.props.handleShowChanged}
-                handleFormData={this.handleSubmit.bind(this)}/>
+            <Modal show={this.props.show} onHide={this.props.handleShowChanged}>
+                <h1>New Task</h1>
+                <TaskForm onSubmit={this.handleSubmit.bind(this)}/>
+            </Modal>
         )
     }
 }

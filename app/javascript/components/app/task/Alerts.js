@@ -1,12 +1,12 @@
 import React from 'react';
-import Alert from "react-bootstrap/Alert";
+import {AlertSuccess} from "../../utilities/Alerts"
 
-const AlertNewTaskSuccess = (props) => {
+const AlertTaskSuccess = (props) => {
     return (
-        <Alert variant="success" dismissible show={props.show} onClose={props.handler}>
+        <AlertSuccess {...props}>
             New task is saved!
-        </Alert>
+        </AlertSuccess>
     )
-};
+}
 
-export {AlertNewTaskSuccess};
+export {AlertTaskSuccess};

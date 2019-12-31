@@ -3,6 +3,7 @@ import axios from 'axios';
 import Form from "react-bootstrap/Form";
 import FormGroup from "react-bootstrap/FormGroup";
 import Button from "react-bootstrap/Button";
+import Modal from "../../utilities/Modal";
 
 // To insert crsf token into every axios HTTP request so that Rails API won't complain that
 // there's no CSRF token when submitting the form.
@@ -34,15 +35,11 @@ class TaskForm extends React.Component {
             description: this.state.description
         }
 
-        this.props.handleFormData(task);
+        this.props.onSubmit(task);
     }
 
     render() {
-        if (this.props.show === false) {
-            return null;
-        }
-
-        const form = (
+        return (
             <Form onSubmit={this.handleSubmit}>
                 <FormGroup>
                     <Form.Label>Title</Form.Label>
@@ -58,16 +55,6 @@ class TaskForm extends React.Component {
                     Submit
                 </Button>
             </Form>
-        )
-
-        return (
-            <div className="myModal">
-                <section className="modal-main">
-                    <button type="button" onClick={this.props.handleShowChanged}>Close</button>
-                    <h1>{this.props.title}</h1>
-                    {form}
-                </section>
-            </div>
         )
     }
 }
