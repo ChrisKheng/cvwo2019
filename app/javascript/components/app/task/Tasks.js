@@ -8,8 +8,8 @@ import TaskList from "./TaskList";
 class Tasks extends React.Component {
     state = {
         tasks: [],
-        showNewTask: false,
-        showNewTaskSuccess: false
+        showModal: false,
+        showAlert: false
     }
 
     // To initialise state
@@ -27,7 +27,7 @@ class Tasks extends React.Component {
     }
 
     handleOnClick = () => {
-        this.setState({showNewTask: !this.state.showNewTask});
+        this.setState({showModal: !this.state.showModal});
     }
 
     handleNewTaskSubmitted = (task) => {
@@ -35,23 +35,24 @@ class Tasks extends React.Component {
         newTasks.push(task);
         this.setState({
             tasks: newTasks,
-            showNewTask: false,
-            showNewTaskSuccess: true
+            showModal: false,
+            showAlert: true
         });
     }
 
-    handleAlertNewTaskClosed = () => {
-        this.setState({showNewTaskSuccess: false});
+    handleAlertShowChanged = () => {
+        this.setState({showAlert: false});
     }
 
     render() {
         return (
             <React.Fragment>
                 <button type="button" onClick={this.handleOnClick.bind(this)}>Toggle</button>
-                <AlertNewTaskSuccess show={this.state.showNewTaskSuccess}
-                                     handler={this.handleAlertNewTaskClosed.bind(this)}/>
+                <AlertNewTaskSuccess show={this.state.showAlert}
+                                     handler={this.handleAlertShowChanged.bind(this)}/>
                 <TaskList tasks={this.state.tasks}/>
-                <NewTask show={this.state.showNewTask} handleShowChanged={this.handleOnClick}/>
+                <NewTask show={this.state.showModal} handleShowChanged={this.handleOnClick}
+                    handleNewTask={this.handleNewTaskSubmitted}/>
             </React.Fragment>
         )
     }
