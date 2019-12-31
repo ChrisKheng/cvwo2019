@@ -11,6 +11,7 @@ class NewTask extends React.Component {
     }
 
     handleSubmit = (newTask) => {
+        // AJAX call
         axios.post("/tasks", {
             task: {...newTask}
         }).then(result => {

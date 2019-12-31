@@ -6,7 +6,7 @@ const Title = () => {
     return (
         <Jumbotron className="home-title-jumbotron">
             <h1>Welcome!</h1>
-            <Button href="/tasks">View Tasks</Button>
+            <Button href="/app">View Tasks</Button>
         </Jumbotron>
     )
 }

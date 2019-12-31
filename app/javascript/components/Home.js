@@ -1,10 +1,10 @@
 import React from 'react'
 import 'bootstrap/dist/css/bootstrap.min.css';
-import NavigationBar from "./app/task/NavigationBar";
 import {BrowserRouter as Router} from "react-router-dom";
-import Routes from "./app/Routes";
+import NavigationBar from "./home/global/NavigationBar";
+import Routes from "./home/Routes";
 
-class App extends React.Component {
+class Home extends React.Component {
     render() {
         return (
             <Router>
@@ -15,4 +15,4 @@ class App extends React.Component {
     }
 }
 
-export default App
+export default Home

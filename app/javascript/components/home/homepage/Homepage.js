@@ -1,7 +1,7 @@
 import React from 'react'
 import Title from "./Title"
 
-class Home extends React.Component {
+class Homepage extends React.Component {
     render() {
         return (
             <Title/>
@@ -9,4 +9,4 @@ class Home extends React.Component {
     }
 }
 
-export default Home
+export default Homepage
