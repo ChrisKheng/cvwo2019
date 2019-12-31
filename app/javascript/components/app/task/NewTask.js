@@ -1,7 +1,7 @@
 import React from 'react'
 import 'bootstrap/dist/css/bootstrap.min.css';
-import TaskForm from "./TaskForm";
 import Modal from "react-bootstrap/Modal";
+import TaskForm from "./TaskForm";
 import axios from "axios";
 
 class NewTask extends React.Component {
@@ -21,16 +21,14 @@ class NewTask extends React.Component {
     }
 
     render() {
+        const showHideClassName = this.props.show ? "myModal display-block" : "myModal display-none";
         return (
-            <Modal show={this.props.show} onHide={this.props.handleShowChanged}>
-                <Modal.Header closeButton>
-                    <Modal.Title>New Task</Modal.Title>
-                </Modal.Header>
-
-                <Modal.Body>
-                    <TaskForm handler={this.handleSubmit}/>
-                </Modal.Body>
-            </Modal>
+            <div className={showHideClassName}>
+                <section className="modal-main">
+                    <button type="button" onClick={this.props.handleShowChanged}/>
+                    <TaskForm/>
+                </section>
+            </div>
         )
     }
 }

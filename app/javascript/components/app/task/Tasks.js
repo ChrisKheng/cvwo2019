@@ -48,11 +48,10 @@ class Tasks extends React.Component {
         return (
             <React.Fragment>
                 <button type="button" onClick={this.handleOnClick.bind(this)}>Toggle</button>
-                <NewTask show={this.state.showNewTask} handleShowChanged={this.handleOnClick.bind(this)}
-                         handleNewTask={this.handleNewTaskSubmitted.bind(this)}/>
                 <AlertNewTaskSuccess show={this.state.showNewTaskSuccess}
                                      handler={this.handleAlertNewTaskClosed.bind(this)}/>
                 <TaskList tasks={this.state.tasks}/>
+                <NewTask show={this.state.showNewTask} handleShowChanged={this.handleOnClick}/>
             </React.Fragment>
         )
     }
