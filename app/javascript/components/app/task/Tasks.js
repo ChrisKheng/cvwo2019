@@ -5,14 +5,15 @@ import NewTask from "./NewTask";
 import TaskList from "./TaskList";
 import {AlertTaskSuccess} from "./Alerts";
 import {AlertFailure} from "../../utilities/Alerts";
+import TaskNavigationBar from "./TaskNavigationBar";
 
 class Tasks extends React.Component {
     state = {
         tasks: [],
-        showModal: false,
         showAlert: false,
         showAlertFailure: false,
-        message: ''
+        message: '',
+        modal: null,
     }
 
     // To initialise state
@@ -29,38 +30,62 @@ class Tasks extends React.Component {
             })
     }
 
-    handleOnClick = () => {
-        this.setState({showModal: !this.state.showModal});
-    }
-
+    //================================================= Task ==========================================================
     handleNewTaskSubmitted = (task) => {
         const newTasks = [...this.state.tasks];
         newTasks.push(task);
         this.setState({
             tasks: newTasks,
-            showModal: false,
+            modal: null,
             showAlert: true
         });
     }
 
     handleNewTaskFailure = (error) => {
         this.setState({
-            showModal: false,
+            modal: null,
             showAlertFailure: true,
             message: error
         });
     }
 
+    //============================================ Navigation Bar =====================================================
+    handleNewTaskClicked = () => {
+        const newTask = (
+            <NewTask show={true}
+                     handleShowChanged={this.handleOnClick.bind(this)}
+                     handleNewTask={this.handleNewTaskSubmitted.bind(this)}
+                     handleNewTaskFailure={this.handleNewTaskFailure.bind(this)}/>
+        );
+
+        this.handleShowModal(newTask);
+    }
+
+    //================================================= Others ========================================================
     handleAlertShowChanged = (key) => {
         const newState = {};
         newState[key] = false;
         this.setState(newState);
     }
 
+    handleShowModal = (modal) => {
+        this.setState({
+            modal: modal,
+        });
+    }
+
+    handleOnClick = () => {
+        this.setState({
+            modal: null,
+        });
+    }
+
+
     render() {
         return (
             <React.Fragment>
-                <button type="button" onClick={this.handleOnClick.bind(this)}>Toggle</button>
+                <TaskNavigationBar onClickNewTask={this.handleNewTaskClicked.bind(this)}/>
+
                 <AlertTaskSuccess show={this.state.showAlert}
                                   handler={this.handleAlertShowChanged.bind(this, "showAlert")}/>
                 <AlertFailure show={this.state.showAlertFailure}
@@ -70,10 +95,7 @@ class Tasks extends React.Component {
 
                 <TaskList tasks={this.state.tasks}/>
 
-                <NewTask show={this.state.showModal}
-                         handleShowChanged={this.handleOnClick.bind(this)}
-                         handleNewTask={this.handleNewTaskSubmitted.bind(this)}
-                         handleNewTaskFailure={this.handleNewTaskFailure.bind(this)}/>
+                {this.state.modal}
             </React.Fragment>
         )
     }
