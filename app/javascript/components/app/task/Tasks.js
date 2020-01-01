@@ -10,8 +10,8 @@ import TaskNavigationBar from "./TaskNavigationBar";
 class Tasks extends React.Component {
     state = {
         tasks: [],
-        showAlert: false,
-        showAlertFailure: false,
+        isShowAlert: false,
+        isShowAlertFailure: false,
         message: '',
         modal: null,
     }
@@ -37,14 +37,14 @@ class Tasks extends React.Component {
         this.setState({
             tasks: newTasks,
             modal: null,
-            showAlert: true
+            isShowAlert: true
         });
     }
 
     handleNewTaskFailure = (error) => {
         this.setState({
             modal: null,
-            showAlertFailure: true,
+            isShowAlertFailure: true,
             message: error
         });
     }
@@ -53,9 +53,9 @@ class Tasks extends React.Component {
     handleNewTaskClicked = () => {
         const newTask = (
             <NewTask show={true}
-                     handleShowChanged={this.handleOnClick.bind(this)}
-                     handleNewTask={this.handleNewTaskSubmitted.bind(this)}
-                     handleNewTaskFailure={this.handleNewTaskFailure.bind(this)}/>
+                     onHide={this.closeModal.bind(this)}
+                     onNewTaskSuccess={this.handleNewTaskSubmitted.bind(this)}
+                     onNewTaskFailure={this.handleNewTaskFailure.bind(this)}/>
         );
 
         this.handleShowModal(newTask);
@@ -74,7 +74,7 @@ class Tasks extends React.Component {
         });
     }
 
-    handleOnClick = () => {
+    closeModal = () => {
         this.setState({
             modal: null,
         });
@@ -86,10 +86,10 @@ class Tasks extends React.Component {
             <React.Fragment>
                 <TaskNavigationBar onClickNewTask={this.handleNewTaskClicked.bind(this)}/>
 
-                <AlertTaskSuccess show={this.state.showAlert}
-                                  handler={this.handleAlertShowChanged.bind(this, "showAlert")}/>
-                <AlertFailure show={this.state.showAlertFailure}
-                              handler={this.handleAlertShowChanged.bind(this, "showAlertFailure")}>
+                <AlertTaskSuccess show={this.state.isShowAlert}
+                                  handler={this.handleAlertShowChanged.bind(this, "isShowAlert")}/>
+                <AlertFailure show={this.state.isShowAlertFailure}
+                              handler={this.handleAlertShowChanged.bind(this, "isShowAlertFailure")}>
                     {this.state.message}
                 </AlertFailure>
 

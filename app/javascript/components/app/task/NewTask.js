@@ -10,16 +10,16 @@ class NewTask extends React.Component {
         axios.post("/tasks", {
             task: {...newTask}
         }).then(result => {
-                this.props.handleNewTask(result.data);
+                this.props.onNewTaskSuccess(result.data);
             }
         ).catch((error) => {
-            this.props.handleNewTaskFailure(error.message);
+            this.props.onNewTaskFailure(error.message);
         })
     }
 
     render() {
         return (
-            <Modal show={this.props.show} onHide={this.props.handleShowChanged}>
+            <Modal show={this.props.show} onHide={this.props.onHide}>
                 <h1>New Task</h1>
                 <TaskForm onSubmit={this.handleSubmit.bind(this)}/>
             </Modal>
