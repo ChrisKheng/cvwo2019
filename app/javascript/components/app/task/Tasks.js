@@ -12,8 +12,8 @@ class Tasks extends React.Component {
         tasks: [],
         isShowAlert: false,
         isShowAlertFailure: false,
-        message: '',
-        modal: null,
+        isShowModal: false,
+        message: ''
     }
 
     // To initialise state
@@ -36,66 +36,48 @@ class Tasks extends React.Component {
         newTasks.push(task);
         this.setState({
             tasks: newTasks,
-            modal: null,
+            isShowModal: false,
             isShowAlert: true
         });
     }
 
     handleNewTaskFailure = (error) => {
         this.setState({
-            modal: null,
+            isShowModal: false,
             isShowAlertFailure: true,
             message: error
         });
     }
 
-    //============================================ Navigation Bar =====================================================
-    handleNewTaskClicked = () => {
-        const newTask = (
-            <NewTask show={true}
-                     onHide={this.closeModal.bind(this)}
-                     onNewTaskSuccess={this.handleNewTaskSubmitted.bind(this)}
-                     onNewTaskFailure={this.handleNewTaskFailure.bind(this)}/>
-        );
-
-        this.handleShowModal(newTask);
-    }
-
     //================================================= Others ========================================================
-    handleAlertShowChanged = (key) => {
+    closeAlert = (key) => {
         const newState = {};
         newState[key] = false;
         this.setState(newState);
     }
 
-    handleShowModal = (modal) => {
-        this.setState({
-            modal: modal,
-        });
+    setModalVisibility = (visibility) => {
+        this.setState({isShowModal: visibility});
     }
-
-    closeModal = () => {
-        this.setState({
-            modal: null,
-        });
-    }
-
 
     render() {
         return (
             <React.Fragment>
-                <TaskNavigationBar onClickNewTask={this.handleNewTaskClicked.bind(this)}/>
+                <TaskNavigationBar onClickNewTask={this.setModalVisibility.bind(this, true)}/>
 
                 <AlertTaskSuccess show={this.state.isShowAlert}
-                                  handler={this.handleAlertShowChanged.bind(this, "isShowAlert")}/>
+                                  handler={this.closeAlert.bind(this, "isShowAlert")}/>
                 <AlertFailure show={this.state.isShowAlertFailure}
-                              handler={this.handleAlertShowChanged.bind(this, "isShowAlertFailure")}>
+                              handler={this.closeAlert.bind(this, "isShowAlertFailure")}>
                     {this.state.message}
                 </AlertFailure>
 
                 <TaskList tasks={this.state.tasks}/>
 
-                {this.state.modal}
+                <NewTask show={this.state.isShowModal}
+                         onHide={this.setModalVisibility.bind(this, false)}
+                         onNewTaskSuccess={this.handleNewTaskSubmitted.bind(this)}
+                         onNewTaskFailure={this.handleNewTaskFailure.bind(this)}/>
             </React.Fragment>
         )
     }
