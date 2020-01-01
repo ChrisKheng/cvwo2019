@@ -17,7 +17,7 @@ const Modal = (props) => {
     }
 
     return (
-        <div className="overlay" onClick={props.onHide}>
+        <div className="overlay">
             <section className="custom-modal">
                 {closeButton}
                 {props.children}

@@ -48,7 +48,7 @@ class TaskForm extends React.Component {
 
                 <FormGroup>
                     <Form.Label>Description</Form.Label>
-                    <Form.Control type="textarea" placeholder="Description" onChange={this.handleDescriptionChanged}/>
+                    <Form.Control as="textarea" row="6" placeholder="Description" onChange={this.handleDescriptionChanged}/>
                 </FormGroup>
 
                 <Button variant="primary" type="submit">
