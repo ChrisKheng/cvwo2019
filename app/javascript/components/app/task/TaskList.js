@@ -1,8 +1,11 @@
-import React from 'react';
+import React, {useState} from 'react';
 import CardColumns from "react-bootstrap/CardColumns";
 import Card from "react-bootstrap/Card";
+import ConfirmationDialog from "../../utilities/ConfirmationDialog";
 
 const TaskList = (props) => {
+    const[isShowDeleteDialog, setDeleteDialogVisibility] = useState(false);
+
     let cards = null;
 
     if (props.tasks !== undefined) {
@@ -12,7 +15,7 @@ const TaskList = (props) => {
                     <Card.Body>
                         <Card.Title>{task.title}</Card.Title>
                         <Card.Text>{task.description}</Card.Text>
-                        <Card.Link href="">Delete</Card.Link>
+                        <Card.Link className="text-primary" onClick={() => setDeleteDialogVisibility(true)}>Delete</Card.Link>
                     </Card.Body>
                 </Card>
             )
@@ -20,9 +23,13 @@ const TaskList = (props) => {
     }
 
     return (
-        <CardColumns className="dashboard">
-            {cards}
-        </CardColumns>
+        <div>
+            <CardColumns className="dashboard">
+                {cards}
+            </CardColumns>
+            <ConfirmationDialog show={isShowDeleteDialog}
+                                onClose={() => setDeleteDialogVisibility(false)}/>
+        </div>
     )
 }
 

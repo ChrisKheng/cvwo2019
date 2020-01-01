@@ -1,20 +1,29 @@
 import React from 'react'
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import {faTimes} from "@fortawesome/free-solid-svg-icons/faTimes";
 
-class Modal extends React.Component {
-    render() {
-        if (!this.props.show) {
-            return null;
-        }
+const Modal = (props) => {
+    let closeButton = (
+        <FontAwesomeIcon icon={faTimes} onClick={props.onHide} size="lg"/>
+    )
 
-        return (
-            <div className="myModal">
-                <section className="modal-main">
-                    <button type="button" onClick={this.props.onHide}>Close</button>
-                    {this.props.children}
-                </section>
-            </div>
-        )
+    if (!props.show) {
+        return null;
     }
+
+    if (props.closeButton !== undefined && !props.closeButton) {
+        console.log(props.closeButton);
+        closeButton = null;
+    }
+
+    return (
+        <div className="overlay" onClick={props.onHide}>
+            <section className="custom-modal">
+                {closeButton}
+                {props.children}
+            </section>
+        </div>
+    )
 }
 
 export default Modal
