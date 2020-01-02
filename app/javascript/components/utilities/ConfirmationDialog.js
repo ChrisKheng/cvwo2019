@@ -11,7 +11,7 @@ const ConfirmationDialog = (props) => {
 
                 <div>
                     <Button type="button" variant="light" onClick={props.onClose}>No</Button>
-                    <Button type="button" variant="primary">Yes</Button>
+                    <Button type="button" variant="primary" onClick={props.onConfirm}>Yes</Button>
                 </div>
             </Container>
         </Modal>

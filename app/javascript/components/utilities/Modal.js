@@ -12,7 +12,6 @@ const Modal = (props) => {
     }
 
     if (props.closeButton !== undefined && !props.closeButton) {
-        console.log(props.closeButton);
         closeButton = null;
     }
 

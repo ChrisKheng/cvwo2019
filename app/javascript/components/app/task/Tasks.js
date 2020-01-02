@@ -1,19 +1,20 @@
 import React from 'react';
 import axios from 'axios';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import Alert from "react-bootstrap/Alert";
 import NewTask from "./NewTask";
 import TaskList from "./TaskList";
-import {AlertTaskSuccess} from "./Alerts";
-import {AlertFailure} from "../../utilities/Alerts";
 import TaskNavigationBar from "./TaskNavigationBar";
 
 class Tasks extends React.Component {
     state = {
         tasks: [],
         isShowAlert: false,
-        isShowAlertFailure: false,
         isShowModal: false,
-        message: ''
+        alertProps: {
+            variant: null,
+            content: null
+        }
     }
 
     // To initialise state
@@ -37,23 +38,53 @@ class Tasks extends React.Component {
         this.setState({
             tasks: newTasks,
             isShowModal: false,
-            isShowAlert: true
+            isShowAlert: true,
+            alertProps: {
+                variant: 'success',
+                content: 'New task is saved! =D'
+            }
         });
     }
 
-    handleNewTaskFailure = (error) => {
+    handleNewTaskFailure = (errorMessage) => {
         this.setState({
             isShowModal: false,
-            isShowAlertFailure: true,
-            message: error
+            isShowAlert: true,
+            alertProps: {
+                variant: 'danger',
+                content: errorMessage
+            }
         });
+    }
+
+    handleTaskDeleted = (taskId) => {
+        const newTasks = [...this.state.tasks];
+        const index = newTasks.findIndex(task => task.id === taskId);
+        newTasks.splice(index, 1);
+
+        this.setState({
+            tasks: newTasks,
+            isShowAlert: true,
+            alertProps: {
+                variant: 'success',
+                content: `Task is deleted! =D`
+            }
+        });
+    }
+
+    handleTaskDeleteFailure = (errorMessage) => {
+        this.setState({
+            isShowAlert: true,
+            alertProps: {
+                variant: 'danger',
+                content: errorMessage
+            }
+        })
     }
 
     //================================================= Others ========================================================
-    closeAlert = (key) => {
-        const newState = {};
-        newState[key] = false;
-        this.setState(newState);
+    closeAlert = () => {
+        this.setState({isShowAlert: false});
     }
 
     setModalVisibility = (visibility) => {
@@ -65,14 +96,16 @@ class Tasks extends React.Component {
             <React.Fragment>
                 <TaskNavigationBar onClickNewTask={this.setModalVisibility.bind(this, true)}/>
 
-                <AlertTaskSuccess show={this.state.isShowAlert}
-                                  handler={this.closeAlert.bind(this, "isShowAlert")}/>
-                <AlertFailure show={this.state.isShowAlertFailure}
-                              handler={this.closeAlert.bind(this, "isShowAlertFailure")}>
-                    {this.state.message}
-                </AlertFailure>
+                <Alert dismissible
+                       variant={this.state.alertProps.variant}
+                       show={this.state.isShowAlert}
+                       onClose={this.closeAlert.bind(this)}>
+                    {this.state.alertProps.content}
+                </Alert>
 
-                <TaskList tasks={this.state.tasks}/>
+                <TaskList tasks={this.state.tasks}
+                          onDelete={this.handleTaskDeleted}
+                          onDeleteFailure={this.handleTaskDeleteFailure}/>
 
                 <NewTask show={this.state.isShowModal}
                          onHide={this.setModalVisibility.bind(this, false)}

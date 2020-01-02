@@ -36,7 +36,6 @@ class TasksController < ApplicationController
 
   def destroy
     @task.destroy
-    flash[:notice] = 'Task is deleted'
   end
 
   private
