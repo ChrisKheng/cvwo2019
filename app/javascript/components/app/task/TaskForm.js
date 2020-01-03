@@ -1,62 +1,66 @@
-import React from 'react';
+import React, {useState} from 'react';
 import axios from 'axios';
 import Form from "react-bootstrap/Form";
 import FormGroup from "react-bootstrap/FormGroup";
 import Button from "react-bootstrap/Button";
-import Modal from "../../utilities/Modal";
 
 // To insert crsf token into every axios HTTP request so that Rails API won't complain that
 // there's no CSRF token when submitting the form.
 const csrfToken = document.querySelector('[name=csrf-token]').content;
 axios.defaults.headers.common['X-CSRF-TOKEN'] = csrfToken;
 
-class TaskForm extends React.Component {
-    state = {
+const TaskForm = (props) => {
+    const initialContent = {
         title: '',
         description: ''
     }
 
-    handleTitleChanged = (event) => {
-        this.setState({
-            title: event.target.value
+    // Initialisation of the form content if given
+    if (props.hasOwnProperty('content')) {
+        Object.keys(props.content).forEach(key => {
+            initialContent[key] = props.content[key];
         })
     }
 
-    handleDescriptionChanged = (event) => {
-        this.setState({
-            description: event.target.value
-        })
+    const[title, setTitle] = useState(initialContent.title);
+    const[description, setDescription] = useState(initialContent.description);
+
+    const handleTitleChanged = (event) => {
+        setTitle(event.target.value);
     }
 
-    handleSubmit = (event) => {
+    const handleDescriptionChanged = (event) => {
+        setDescription(event.target.value);
+    }
+
+    const handleSubmit = (event) => {
         event.preventDefault();
         const task = {
-            title: this.state.title,
-            description: this.state.description
+            title: title,
+            description: description
         }
 
-        this.props.onSubmit(task);
+        props.onSubmit(task);
     }
 
-    render() {
-        return (
-            <Form onSubmit={this.handleSubmit}>
-                <FormGroup>
-                    <Form.Label>Title</Form.Label>
-                    <Form.Control type="text" placeholder="Title" onChange={this.handleTitleChanged}/>
-                </FormGroup>
+    return (
+        <Form onSubmit={handleSubmit}>
+            <FormGroup>
+                <Form.Label>Title</Form.Label>
+                <Form.Control type="text" placeholder="Title" value={title} onChange={handleTitleChanged}/>
+            </FormGroup>
 
-                <FormGroup>
-                    <Form.Label>Description</Form.Label>
-                    <Form.Control as="textarea" row="6" placeholder="Description" onChange={this.handleDescriptionChanged}/>
-                </FormGroup>
+            <FormGroup>
+                <Form.Label>Description</Form.Label>
+                <Form.Control as="textarea" row="6" placeholder="Description" value={description}
+                              onChange={handleDescriptionChanged}/>
+            </FormGroup>
 
-                <Button variant="primary" type="submit">
-                    Submit
-                </Button>
-            </Form>
-        )
-    }
+            <Button variant="primary" type="submit">
+                Submit
+            </Button>
+        </Form>
+    )
 }
 
-export default TaskForm
+export default TaskForm;
