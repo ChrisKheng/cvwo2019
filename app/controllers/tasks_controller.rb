@@ -18,16 +18,14 @@ class TasksController < ApplicationController
     if @task.save
       flash[:notice] = 'Your task is successfully saved!'
       render json: @task
-    else
-      render 'new' # Change this to show error messages in React
     end
   end
 
   def update
     if @task.update(task_param)
-      flash[:notice] = 'Your task is updated'
+      render json: @task
     else
-      render 'edit' # Change this to show error messages in React
+      render json: @task.errors.full_messages
     end
   end
 

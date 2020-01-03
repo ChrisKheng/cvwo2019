@@ -67,7 +67,7 @@ class Tasks extends React.Component {
             isShowAlert: true,
             alertProps: {
                 variant: 'success',
-                content: `Task is deleted! =D`
+                content: 'Task is deleted! =D'
             }
         });
     }
@@ -81,6 +81,33 @@ class Tasks extends React.Component {
             }
         })
     }
+
+    handleTaskEdited = (editedTask) => {
+        const newTasks = [...this.state.tasks];
+        const index = newTasks.findIndex((task) => task.id === editedTask.id);
+        newTasks.splice(index, 1);
+        newTasks.push(editedTask);
+
+        this.setState({
+            tasks: newTasks,
+            isShowAlert: true,
+            alertProps: {
+                variant: 'success',
+                content: 'Task edited! =D'
+            }
+        })
+    }
+
+    handleTaskEditFailure = (errorMessage) => {
+        this.setState({
+            isShowAlert: true,
+            alertProps: {
+                variant: 'danger',
+                content: errorMessage
+            }
+        })
+    }
+
 
     //================================================= Others ========================================================
     closeAlert = () => {
@@ -104,6 +131,8 @@ class Tasks extends React.Component {
                 </Alert>
 
                 <TaskList tasks={this.state.tasks}
+                          onEdit={this.handleTaskEdited}
+                          onEditFail={this.handleTaskEditFailure}
                           onDelete={this.handleTaskDeleted}
                           onDeleteFailure={this.handleTaskDeleteFailure}/>
 

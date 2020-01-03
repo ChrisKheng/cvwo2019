@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import axios from 'axios';
 import CardColumns from "react-bootstrap/CardColumns";
 import Card from "react-bootstrap/Card";
@@ -6,10 +6,10 @@ import ConfirmationDialog from "../../utilities/ConfirmationDialog";
 import EditTask from "./EditTask";
 
 const TaskList = (props) => {
-    const[isShowEditDialog, setEditDialogVisibility] = useState(false);
-    const[task, setTask] = useState(null);
-    const[isShowDeleteDialog, setDeleteDialogVisibility] = useState(false);
-    const[taskId, setTaskId] = useState(null);
+    const [isShowEditDialog, setEditDialogVisibility] = useState(false);
+    const [task, setTask] = useState(null);
+    const [isShowDeleteDialog, setDeleteDialogVisibility] = useState(false);
+    const [taskId, setTaskId] = useState(null);
 
     const onEditClicked = (task) => {
         setTask(task);
@@ -24,15 +24,15 @@ const TaskList = (props) => {
     const onDeleteConfirmed = (id) => {
         axios.delete(`tasks/${id}`)
             .then(() => {
-                    props.onDelete(id);
-                }
+                props.onDelete(id);
+            }
             ).catch((error) => {
                 props.onDeleteFailure(error.message);
             }
-        ).finally(() => {
+            ).finally(() => {
                 setDeleteDialogVisibility(false);
             }
-        )
+            )
     }
 
     let cards = null;
@@ -57,10 +57,16 @@ const TaskList = (props) => {
             <CardColumns className="dashboard">
                 {cards}
             </CardColumns>
-            <EditTask show={isShowEditDialog} onHide={() => setEditDialogVisibility(false)}
-                      task={task}/>
-            <ConfirmationDialog show={isShowDeleteDialog} onClose={() => setDeleteDialogVisibility(false)}
-                                onConfirm={() => onDeleteConfirmed(taskId)}/>
+            <EditTask
+                show={isShowEditDialog}
+                onHide={() => setEditDialogVisibility(false)}
+                onEdit={props.onEdit}
+                onEditFail={props.onEditFail}
+                task={task} />
+            <ConfirmationDialog
+                show={isShowDeleteDialog}
+                onClose={() => setDeleteDialogVisibility(false)}
+                onConfirm={() => onDeleteConfirmed(taskId)} />
         </div>
     )
 }
