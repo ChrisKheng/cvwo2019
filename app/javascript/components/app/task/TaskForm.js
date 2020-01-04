@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import axios from 'axios';
 import Form from "react-bootstrap/Form";
 import FormGroup from "react-bootstrap/FormGroup";
@@ -10,6 +10,7 @@ const csrfToken = document.querySelector('[name=csrf-token]').content;
 axios.defaults.headers.common['X-CSRF-TOKEN'] = csrfToken;
 
 const TaskForm = (props) => {
+    //================================================ Initialisation =================================================
     const initialContent = {
         title: '',
         description: ''
@@ -22,8 +23,9 @@ const TaskForm = (props) => {
         })
     }
 
-    const[title, setTitle] = useState(initialContent.title);
-    const[description, setDescription] = useState(initialContent.description);
+    //============================================== Handle Input Change ==============================================
+    const [title, setTitle] = useState(initialContent.title);
+    const [description, setDescription] = useState(initialContent.description);
 
     const handleTitleChanged = (event) => {
         setTitle(event.target.value);
@@ -33,27 +35,57 @@ const TaskForm = (props) => {
         setDescription(event.target.value);
     }
 
+    //========================================= Handle Submit and Validation ==========================================
+    const [isTitleInvalid, setIsTitleInvalid] = useState(false);
+    const [isDescriptionInvalid, setIsDescriptionInvalid] = useState(false);
+
     const handleSubmit = (event) => {
         event.preventDefault();
         const task = {
-            title: title,
-            description: description
+            title: title.trim(),
+            description: description.trim()
         }
 
-        props.onSubmit(task);
+        if (validateForm(task)) {
+            props.onSubmit(task);
+        }
+    }
+
+    const validateForm = (task) => {
+        let errorCount = 0;
+
+        // Reset validation state
+        setIsTitleInvalid(false);
+        setIsDescriptionInvalid(false);
+
+        if (task.title.length === 0) {
+            setIsTitleInvalid(true);
+            errorCount++;
+        }
+
+        if (task.description.length === 0) {
+            setIsDescriptionInvalid(true);
+            errorCount++;
+        }
+
+        return errorCount === 0;    
     }
 
     return (
         <Form onSubmit={handleSubmit}>
             <FormGroup>
                 <Form.Label>Title</Form.Label>
-                <Form.Control type="text" placeholder="Title" value={title} onChange={handleTitleChanged}/>
+                <Form.Control type="text" placeholder="Title" value={title} onChange={handleTitleChanged}
+                    isInvalid={isTitleInvalid} />
+                <Form.Control.Feedback type="invalid">Title cannot be empty</Form.Control.Feedback>
             </FormGroup>
 
             <FormGroup>
                 <Form.Label>Description</Form.Label>
                 <Form.Control as="textarea" row="6" placeholder="Description" value={description}
-                              onChange={handleDescriptionChanged}/>
+                    onChange={handleDescriptionChanged}
+                    isInvalid={isDescriptionInvalid}/>
+                <Form.Control.Feedback type="invalid">Description cannot be empty</Form.Control.Feedback>
             </FormGroup>
 
             <Button variant="primary" type="submit">
