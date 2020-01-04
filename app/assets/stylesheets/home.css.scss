@@ -4,6 +4,7 @@
     margin-bottom: 0px;
     height: 100vh;
     text-align: center; /* Applies to button too */
+    position: relative;
   }
   
  .home-title-jumbotron button {
@@ -11,5 +12,9 @@
  }
 
  .home-footer {
-    text-align: center;
+    color: whitesmoke;
+    position: absolute;
+    bottom: 0px;
+    left: 0px;
+    width: 100%;
  }

@@ -8,7 +8,7 @@ const Title = () => {
             <h1>Welcome!</h1>
             <Button href="/app">View Tasks</Button>
             <footer className="home-footer">
-                Photo credit to <a href="https://jaymantri.com">Jay Mantri</a>
+                <p>Photo credit to <a href="https://jaymantri.com">Jay Mantri</a></p>
             </footer>
         </Jumbotron>
     )
