@@ -1,12 +1,15 @@
+#home-title-jumbotron {
+    background-image: asset-url('Home_Jumbotron.jpg');
+    background-size: cover; /* Fit width */
+    margin-bottom: 0px;
+    height: 100vh;
+    text-align: center; /* Applies to button too */
+  }
+  
+ .home-title-jumbotron button {
+    margin: 5px;
+ }
 
-.home-title-jumbotron {
-  background-image: asset-url('Home_Jumbotron.jpg');
-  background-size: cover; /* Fit width */
-  height: 100vh;
-  text-align: center; /* Applies to button too */
-}
-
-.home-title-jumbotron button {
-  margin: 25px;
-}
-
+ .home-footer {
+    text-align: center;
+ }

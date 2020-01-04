@@ -4,7 +4,9 @@ import Title from "./Title"
 class Homepage extends React.Component {
     render() {
         return (
-            <Title/>
+            <div>
+                <Title />
+            </div>
         )
     }
 }
