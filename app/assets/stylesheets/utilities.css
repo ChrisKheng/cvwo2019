@@ -20,6 +20,10 @@
     white-space: nowrap;
 }
 
+.custom-modal-size-sm {
+    width: 50%;
+}
+
 .display-block {
     display: inline-block;
 }
@@ -30,4 +34,8 @@
 
 .fa-times:hover {
     background-color: #EFEFEF;
+}
+
+.dialog button {
+    margin: 2px;
 }

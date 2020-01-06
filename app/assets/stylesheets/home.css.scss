@@ -1,9 +1,9 @@
 #home-title-jumbotron {
-    background-image: asset-url('Home_Jumbotron.jpg');
+    background-image: asset-url('Home_Jumbotron.jpg'); /* This is SCSS syntax */
     background-size: cover; /* Fit width */
     margin-bottom: 0px;
     height: 100vh;
-    text-align: center; /* Applies to button too */
+    text-align: center; /* Applies to button and all jumbotron's children too */
     position: relative;
   }
   

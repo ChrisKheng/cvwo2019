@@ -5,8 +5,8 @@ import Container from "react-bootstrap/Container";
 
 const ConfirmationDialog = (props) => {
     return (
-        <Modal show={props.show} closeButton={false}>
-            <Container className="text-center">
+        <Modal show={props.show} closeButton={false} size="sm">
+            <Container className="text-center dialog">
                 <h4>Are you sure?</h4>
 
                 <div>

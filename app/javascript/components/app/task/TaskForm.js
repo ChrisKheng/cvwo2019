@@ -82,7 +82,7 @@ const TaskForm = (props) => {
 
             <FormGroup>
                 <Form.Label>Description</Form.Label>
-                <Form.Control as="textarea" row="6" placeholder="Description" value={description}
+                <Form.Control as="textarea" rows="5" placeholder="Description" value={description}
                     onChange={handleDescriptionChanged}
                     isInvalid={isDescriptionInvalid}/>
                 <Form.Control.Feedback type="invalid">Description cannot be empty</Form.Control.Feedback>
