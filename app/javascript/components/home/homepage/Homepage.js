@@ -1,6 +1,9 @@
-import React from 'react'
-import Title from "./Title"
+import React from 'react';
+import Title from "./Title";
 
+/**
+ * Represents the home page of the product website.
+ */
 class Homepage extends React.Component {
     render() {
         return (
@@ -11,4 +14,4 @@ class Homepage extends React.Component {
     }
 }
 
-export default Homepage
+export default Homepage;

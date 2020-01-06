@@ -3,6 +3,9 @@ import {Route} from "react-router-dom";
 import Homepage from "./homepage/Homepage";
 import About from "./about/About";
 
+/**
+ * Represents the possible routes in the product website (used by React-Router).
+ */
 const Routes = () => {
     return (
         <div>
@@ -10,6 +13,6 @@ const Routes = () => {
             <Route path = "/about" render = {() => <About/>}/>
         </div>
     )
-}
+};
 
 export default Routes;

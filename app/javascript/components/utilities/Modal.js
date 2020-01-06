@@ -1,12 +1,22 @@
-import React from 'react'
-import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {faTimes} from "@fortawesome/free-solid-svg-icons/faTimes";
+import React from 'react';
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faTimes } from "@fortawesome/free-solid-svg-icons/faTimes";
 
+/**
+ * Represents a general modal which can be used by other components.
+ * 
+ * Modal JSX attribues
+ * show = toggle modal visibility (must be provided, either true or false).
+ * onHide = function that will be triggered when the close button of modal is clicked.
+ * closeButton = toggle button visibility (by default true).
+ * size = change the size of the modal (available options: sm).
+ */
 const Modal = (props) => {
     let closeButton = (
-        <FontAwesomeIcon icon={faTimes} onClick={props.onHide} size="lg"/>
-    )
-    let className = "custom-modal"
+        <FontAwesomeIcon icon={faTimes} onClick={props.onHide} size="lg" />
+    );
+
+    let className = "custom-modal";
 
     // Toggle modal visibility
     if (!props.show) {
@@ -31,6 +41,6 @@ const Modal = (props) => {
             </section>
         </div>
     )
-}
+};
 
-export default Modal
+export default Modal;

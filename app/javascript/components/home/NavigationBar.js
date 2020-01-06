@@ -3,6 +3,9 @@ import Navbar from "react-bootstrap/Navbar";
 import Nav from "react-bootstrap/Nav";
 import {Link} from "react-router-dom";
 
+/**
+ * Represents the navigation bar of the product website.
+ */
 const NavigationBar = () => {
     return (
         <Navbar variant="dark" bg="dark" expand="lg">
@@ -15,6 +18,6 @@ const NavigationBar = () => {
             </Navbar.Collapse>
         </Navbar>
     )
-}
+};
 
-export default NavigationBar
+export default NavigationBar;

@@ -1,6 +1,9 @@
-import React from 'react'
+import React from 'react';
 import Navbar from "react-bootstrap/Navbar";
 
+/**
+ * Represents the navigation bar of the application.
+ */
 const NavigationBar = (props) => {
     return (
         <Navbar variant="dark" bg="dark">
@@ -8,6 +11,6 @@ const NavigationBar = (props) => {
             {props.children}
         </Navbar>
     )
-}
+};
 
-export default NavigationBar
+export default NavigationBar;

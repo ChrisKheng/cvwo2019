@@ -1,6 +1,9 @@
-import React from 'react'
+import React from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
+/**
+ * Represents the about page of the product website.
+ */
 class About extends React.Component {
     render() {
         return (
@@ -27,4 +30,4 @@ class About extends React.Component {
     }
 }
 
-export default About
+export default About;
