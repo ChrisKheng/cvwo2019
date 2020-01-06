@@ -56,7 +56,7 @@ class Tasks extends React.Component {
             isShowAlert: true,
             alertProps: {
                 variant: 'success',
-                content: 'New task is saved! =D'
+                content: 'Task created! =D'
             }
         });
     }
@@ -88,7 +88,7 @@ class Tasks extends React.Component {
             isShowAlert: true,
             alertProps: {
                 variant: 'success',
-                content: 'Task is deleted! =D'
+                content: 'Task deleted! =D'
             }
         });
     }
