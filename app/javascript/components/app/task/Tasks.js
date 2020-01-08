@@ -45,7 +45,12 @@ class Tasks extends React.Component {
 
         axios.get("/categories")
             .then(result => {
-                const array = result.data.map(tag => tag.name);
+                const array = result.data.map(tag => {
+                    return {
+                        id: tag.id,
+                        label: tag.name
+                    }
+                })
                 this.setState({tags: array})
             })
     }

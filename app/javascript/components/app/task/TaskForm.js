@@ -3,7 +3,7 @@ import axios from 'axios';
 import Form from "react-bootstrap/Form";
 import FormGroup from "react-bootstrap/FormGroup";
 import Button from "react-bootstrap/Button";
-import {Typeahead} from "react-bootstrap-typeahead";
+import { Typeahead } from "react-bootstrap-typeahead";
 
 // To insert crsf token into every axios HTTP request so that Rails API won't complain that
 // there's no CSRF token when submitting the form.
@@ -34,7 +34,7 @@ const TaskForm = (props) => {
 
     const [title, setTitle] = useState(initialContent.title);
     const [description, setDescription] = useState(initialContent.description);
-    const selectedTags = [];
+    const [selectedTags, setSelectedTags] = useState([]);
 
     //============================================== Handle Input Change ==============================================
 
@@ -47,17 +47,28 @@ const TaskForm = (props) => {
     };
 
     const handleTagsChanged = (selections) => {
-        let length = selections.length;
-        const newItem = selections[length - 1];
+        if (selections.length === 0) {
+            return;
+        }
 
-        if (typeof newItem === 'object') {
+        let length = selections.length;
+        const lastItem = selections[length - 1];
+        const isNewTag = props.tagsProps.tags.find(tag => tag.label === lastItem.label) === undefined;
+            
+        if (isNewTag) {
             axios.post('/categories', {
-                category: {name: newItem.label}
+                category: { name: lastItem.label }
             }).then((result) => {
-                selections.splice(length - 1, 1, result.data.name);
-                props.tagsProps.onNewTagCreated(result.data.name);
+                const newTag = {
+                    id: result.data.id,
+                    label: result.data.name
+                }
+                selections.splice(length - 1, 1, newTag);
+                props.tagsProps.onNewTagCreated(newTag);
             })
         }
+
+        setSelectedTags(selections);
     }
 
     //========================================= Handle Submit and Validation ==========================================
@@ -71,7 +82,8 @@ const TaskForm = (props) => {
         event.preventDefault();
         const task = {
             title: title.trim(),
-            description: description.trim()
+            description: description.trim(),
+            category_ids: selectedTags.map(tag => tag.id)
         }
 
         if (validateForm(task)) {
@@ -129,15 +141,15 @@ const TaskForm = (props) => {
             <FormGroup>
                 <Form.Label>Tag</Form.Label>
                 <Typeahead
-                id="tag-typahead"
-                clearButton
-                maxHeight='110px'
-                multiple={true}
-                options={props.tagsProps.tags}
-                allowNew
-                newSelectionPrefix="Create new tag: "
-                onChange={handleTagsChanged}
-                selected={selectedTags}/>
+                    id="tag-typahead"
+                    clearButton
+                    maxHeight='110px'
+                    multiple={true}
+                    options={props.tagsProps.tags}
+                    allowNew
+                    newSelectionPrefix="Create new tag: "
+                    onChange={handleTagsChanged}
+                    selected={selectedTags} />
             </FormGroup>
 
             <Button variant="primary" type="submit">
