@@ -44,6 +44,7 @@ class TasksController < ApplicationController
   end
 
   # Checks the title and description of the task is empty using the task model.
+  # Also filters the params that are passed in
   def task_param
     params.require(:task).permit(:title, :description)
   end

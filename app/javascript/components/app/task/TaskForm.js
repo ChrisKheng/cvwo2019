@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import Form from "react-bootstrap/Form";
 import FormGroup from "react-bootstrap/FormGroup";
 import Button from "react-bootstrap/Button";
+import {Typeahead} from "react-bootstrap-typeahead";
 
 // To insert crsf token into every axios HTTP request so that Rails API won't complain that
 // there's no CSRF token when submitting the form.
@@ -31,9 +32,11 @@ const TaskForm = (props) => {
         })
     }
 
-    //============================================== Handle Input Change ==============================================
     const [title, setTitle] = useState(initialContent.title);
     const [description, setDescription] = useState(initialContent.description);
+    const selectedTags = [];
+
+    //============================================== Handle Input Change ==============================================
 
     const handleTitleChanged = (event) => {
         setTitle(event.target.value);
@@ -42,6 +45,20 @@ const TaskForm = (props) => {
     const handleDescriptionChanged = (event) => {
         setDescription(event.target.value);
     };
+
+    const handleTagsChanged = (selections) => {
+        let length = selections.length;
+        const newItem = selections[length - 1];
+
+        if (typeof newItem === 'object') {
+            axios.post('/categories', {
+                category: {name: newItem.label}
+            }).then((result) => {
+                selections.splice(length - 1, 1, result.data.name);
+                props.tagsProps.onNewTagCreated(result.data.name);
+            })
+        }
+    }
 
     //========================================= Handle Submit and Validation ==========================================
     const [isTitleInvalid, setIsTitleInvalid] = useState(false);
@@ -101,12 +118,26 @@ const TaskForm = (props) => {
                 <Form.Label>Description</Form.Label>
                 <Form.Control
                     as="textarea"
-                    rows="5"
+                    rows="4"
                     placeholder="Description"
                     value={description}
                     onChange={handleDescriptionChanged}
                     isInvalid={isDescriptionInvalid} />
                 <Form.Control.Feedback type="invalid">Description cannot be empty</Form.Control.Feedback>
+            </FormGroup>
+
+            <FormGroup>
+                <Form.Label>Tag</Form.Label>
+                <Typeahead
+                id="tag-typahead"
+                clearButton
+                maxHeight='110px'
+                multiple={true}
+                options={props.tagsProps.tags}
+                allowNew
+                newSelectionPrefix="Create new tag: "
+                onChange={handleTagsChanged}
+                selected={selectedTags}/>
             </FormGroup>
 
             <Button variant="primary" type="submit">

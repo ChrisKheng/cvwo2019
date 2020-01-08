@@ -16,17 +16,18 @@ class Tasks extends React.Component {
     // content: message to be displayed in the alert
     state = {
         tasks: [],
+        tags: [],
         isShowAlert: false,
         isShowModal: false,
         alertProps: {
             variant: null,
-            content: null 
+            content: null
         }
     }
 
     /**
      * To initialise state.
-     */ 
+     */
     constructor(props) {
         super(props);
         this.state.tasks = props.tasks;
@@ -41,12 +42,18 @@ class Tasks extends React.Component {
             .then(result => {
                 this.setState({ tasks: [...result.data] });
             })
+
+        axios.get("/categories")
+            .then(result => {
+                const array = result.data.map(tag => tag.name);
+                this.setState({tags: array})
+            })
     }
 
     //================================================= Task ==========================================================
     /**
      * Adds the newly created task into the tasks list, closes the new task modal and fires up a success alert.
-     */ 
+     */
     handleNewTaskSubmitted = (task) => {
         const newTasks = [...this.state.tasks];
         newTasks.push(task);
@@ -63,7 +70,7 @@ class Tasks extends React.Component {
 
     /** 
      * Closes the new task modal and fires up a failure alert with the error message given.
-     */ 
+     */
     handleNewTaskFailure = (errorMessage) => {
         this.setState({
             isShowModal: false,
@@ -77,7 +84,7 @@ class Tasks extends React.Component {
 
     /**
      * Deletes the task with the taskId given from the tasks list and fires up a success alert.
-     */ 
+     */
     handleTaskDeleted = (taskId) => {
         const newTasks = [...this.state.tasks];
         const index = newTasks.findIndex(task => task.id === taskId);
@@ -95,7 +102,7 @@ class Tasks extends React.Component {
 
     /**
      * Updates the edited task in the tasks list and fires up a success alert.
-     */ 
+     */
     handleTaskEdited = (editedTask) => {
         const newTasks = [...this.state.tasks];
         const index = newTasks.findIndex((task) => task.id === editedTask.id);
@@ -114,7 +121,7 @@ class Tasks extends React.Component {
 
     /**
      * Fires up a failure alert showing the errorMessage given.
-     */ 
+     */
     showFailureAlert = (errorMessage) => {
         this.setState({
             isShowAlert: true,
@@ -123,6 +130,13 @@ class Tasks extends React.Component {
                 content: errorMessage
             }
         })
+    }
+
+    //================================================== Tags =========================================================
+    handleNewTagCreated = (tag) => {
+        const array = [...this.state.tags];
+        array.push(tag);
+        this.setState({tags: array});
     }
 
     //================================================= Others ========================================================
@@ -141,6 +155,11 @@ class Tasks extends React.Component {
     }
 
     render() {
+        const tagsProps = {
+            tags: this.state.tags,
+            onNewTagCreated: this.handleNewTagCreated
+        }
+
         return (
             <React.Fragment>
                 <TaskNavigationBar onClickNewTask={this.setModalVisibility.bind(this, true)} />
@@ -155,12 +174,14 @@ class Tasks extends React.Component {
 
                 <TasksList
                     tasks={this.state.tasks}
+                    tagsProps={tagsProps}
                     onEdit={this.handleTaskEdited}
                     onEditFailure={this.showFailureAlert}
                     onDelete={this.handleTaskDeleted}
                     onDeleteFailure={this.showFailureAlert} />
 
                 <NewTask
+                    tagsProps={tagsProps}
                     show={this.state.isShowModal}
                     onHide={this.setModalVisibility.bind(this, false)}
                     onNewTaskSuccess={this.handleNewTaskSubmitted.bind(this)}

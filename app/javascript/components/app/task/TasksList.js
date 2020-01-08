@@ -79,6 +79,7 @@ const TasksList = (props) => {
                 {cards}
             </CardColumns>
             <EditTask
+                tagsProps = {props.tagsProps}
                 show={isShowEditDialog}
                 onHide={() => setEditDialogVisibility(false)}
                 onEdit={props.onEdit}

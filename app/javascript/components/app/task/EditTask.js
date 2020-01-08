@@ -34,8 +34,10 @@ const EditTask = (props) => {
     return (
         <Modal show={props.show} onHide={props.onHide}>
             <h1>Edit Task</h1>
-            <TaskForm content={{...props.task}}
-            onSubmit={onSubmit}/>
+            <TaskForm
+            content={{...props.task}}
+            onSubmit={onSubmit}
+            tagsProps={props.tagsProps}/>
         </Modal>
     )
 };
