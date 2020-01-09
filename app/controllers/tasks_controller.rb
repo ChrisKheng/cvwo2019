@@ -6,7 +6,12 @@ class TasksController < ApplicationController
   # Fetches all tasks and return them.
   def index
     @tasks = Task.all
-    render json: @tasks
+    response = @tasks.map{|task|
+      hash = task.attributes
+      hash["tags"] = task.categories.to_ary.map{|category| category.attributes}
+      hash
+    }
+    render json: response
   end
 
   # Creates a new task in the database and return the task object as JSON to the client if

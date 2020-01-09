@@ -40,6 +40,7 @@ class Tasks extends React.Component {
         // AJAX call
         axios.get("/tasks")
             .then(result => {
+                console.log(result.data);
                 this.setState({ tasks: [...result.data] });
             })
 

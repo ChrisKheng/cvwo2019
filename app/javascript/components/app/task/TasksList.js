@@ -60,6 +60,16 @@ const TasksList = (props) => {
     // Display the tasks if any
     if (props.tasks !== undefined) {
         cards = props.tasks.map((task) => {
+            let tags = null;
+            if (task.tags.length !== 0) {
+                const categories = `Tags: ${task.tags.map(tag => tag.name).join(", ")}`;
+                tags = (
+                    <Card.Footer className="text-muted">
+                        <small>{categories}</small>
+                    </Card.Footer>
+                )
+            }
+
             return (
                 <Card key={task.id}>
                     <Card.Body>
@@ -68,6 +78,7 @@ const TasksList = (props) => {
                         <Card.Link className="text-primary" onClick={() => onEditClicked(task)}>Edit</Card.Link>
                         <Card.Link className="text-primary" onClick={() => onDeleteClicked(task.id)}>Delete</Card.Link>
                     </Card.Body>
+                    {tags}
                 </Card>
             )
         })
