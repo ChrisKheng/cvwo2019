@@ -19,8 +19,11 @@ const EditTask = (props) => {
      * After that, performs follow-up action accordingly and closes the edit task form modal.
      */
     const onSubmit = (editedTask) => {
-        axios.put(`tasks/${props.task.id}`, editedTask)
-            .then(result => {
+        console.log(editedTask);
+        axios.put(`tasks/${props.task.id}`, {
+            task: {...editedTask}
+        }).then(result => {
+            console.log(result.data);
                 props.onEdit(result.data);
             })
             .catch(error => {

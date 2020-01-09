@@ -14,6 +14,7 @@ class TasksController < ApplicationController
   # the action is successful. Otherwise, returns the error message to the client.
   def create
     @task = Task.new(task_param)
+    print task_param
     if @task.save
       render json: getTaskHash(@task)
     else
@@ -24,8 +25,9 @@ class TasksController < ApplicationController
   # Updates the task specified by the id given in the database and return the updated task object as JSON to the client 
   # if the action is successful. Otherwise, returns the error message to the client.
   def update
+    print task_param
     if @task.update(task_param)
-      render json: @task
+      render json: getTaskHash(@task)
     else
       render json: @task.errors.full_messages
     end

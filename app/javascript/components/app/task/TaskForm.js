@@ -20,9 +20,11 @@ axios.defaults.headers.common['X-CSRF-TOKEN'] = csrfToken;
  */
 const TaskForm = (props) => {
     //================================================ Initialisation =================================================
+    // The name of the keys here must be the same as those of the task object passed in
     const initialContent = {
         title: '',
-        description: ''
+        description: '',
+        tags: []
     };
 
     // Initialisation of the form content if given
@@ -30,11 +32,19 @@ const TaskForm = (props) => {
         Object.keys(props.content).forEach(key => {
             initialContent[key] = props.content[key];
         })
+
+        // Change the name of the key "name" to "label" of the tag object
+        initialContent.tags = initialContent.tags.map(tag => {
+           return {
+               id: tag.id,
+               label: tag.name
+           } 
+        });
     }
 
     const [title, setTitle] = useState(initialContent.title);
     const [description, setDescription] = useState(initialContent.description);
-    const [selectedTags, setSelectedTags] = useState([]);
+    const [selectedTags, setSelectedTags] = useState(initialContent.tags);
 
     //============================================== Handle Input Change ==============================================
 
@@ -47,7 +57,9 @@ const TaskForm = (props) => {
     };
 
     const handleTagsChanged = (selections) => {
+        console.log(selections);
         if (selections.length === 0) {
+            setSelectedTags(selections);
             return;
         }
 
