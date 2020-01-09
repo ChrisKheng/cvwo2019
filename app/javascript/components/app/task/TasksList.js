@@ -61,7 +61,6 @@ const TasksList = (props) => {
     if (props.tasks !== undefined) {
         cards = props.tasks.map((task) => {
             let tags = null;
-            console.log(task);
             if (task.tags.length !== 0) {
                 const categories = `Tags: ${task.tags.map(tag => tag.name).join(", ")}`;
                 tags = (
