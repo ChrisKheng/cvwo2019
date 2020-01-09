@@ -6,11 +6,7 @@ class TasksController < ApplicationController
   # Fetches all tasks and return them.
   def index
     @tasks = Task.all
-    response = @tasks.map{|task|
-      hash = task.attributes
-      hash["tags"] = task.categories.to_ary.map{|category| category.attributes}
-      hash
-    }
+    response = @tasks.map{|task| getTaskHash(task)}
     render json: response
   end
 
@@ -19,7 +15,7 @@ class TasksController < ApplicationController
   def create
     @task = Task.new(task_param)
     if @task.save
-      render json: @task
+      render json: getTaskHash(@task)
     else
       render json: @task.errors.full_messages  
     end
@@ -47,6 +43,12 @@ class TasksController < ApplicationController
   def load_task
     @task = Task.find(params[:id])
   end
+
+  def getTaskHash(task)
+    hash = task.attributes
+    hash["tags"] = task.categories.to_ary.map{|category| category.attributes}
+    hash
+  end   
 
   # Checks the title and description of the task is empty using the task model.
   # Also filters the params that are passed in
