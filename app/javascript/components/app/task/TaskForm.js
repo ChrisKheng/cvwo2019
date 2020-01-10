@@ -163,7 +163,6 @@ const TaskForm = (props) => {
             <FormGroup>
                 <Form.Label>Tag</Form.Label>
                 <Typeahead
-                    id="tag-typahead"
                     clearButton
                     maxHeight='110px'
                     isInvalid={isInvalidTag}

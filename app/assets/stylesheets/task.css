@@ -1,0 +1,3 @@
+.typeahead-invalid > div{
+    box-shadow: 0 0 5px red;
+}
