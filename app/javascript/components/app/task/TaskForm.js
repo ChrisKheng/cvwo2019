@@ -35,16 +35,17 @@ const TaskForm = (props) => {
 
         // Change the name of the key "name" to "label" of the tag object
         initialContent.tags = initialContent.tags.map(tag => {
-           return {
-               id: tag.id,
-               label: tag.name
-           } 
+            return {
+                id: tag.id,
+                label: tag.name
+            }
         });
     }
 
     const [title, setTitle] = useState(initialContent.title);
     const [description, setDescription] = useState(initialContent.description);
     const [selectedTags, setSelectedTags] = useState(initialContent.tags);
+    const [isInvalidTag, setIsInvalidTag] = useState(false);
 
     //============================================== Handle Input Change ==============================================
 
@@ -58,18 +59,20 @@ const TaskForm = (props) => {
 
     const handleTagsChanged = (selections) => {
         console.log(selections);
+        setIsInvalidTag(false);
         if (selections.length === 0) {
             setSelectedTags(selections);
             return;
         }
 
         let length = selections.length;
-        const lastItem = selections[length - 1];
-        const isNewTag = props.tagsProps.tags.find(tag => tag.label === lastItem.label) === undefined;
-            
+        const newItem = selections[length - 1];
+
+        const isNewTag = props.tagsProps.tags.find(tag => tag.label === newItem.label) === undefined;
         if (isNewTag) {
+            console.log("U");
             axios.post('/categories', {
-                category: { name: lastItem.label }
+                category: { name: newItem.label }
             }).then((result) => {
                 const newTag = {
                     id: result.data.id,
@@ -78,6 +81,13 @@ const TaskForm = (props) => {
                 selections.splice(length - 1, 1, newTag);
                 props.tagsProps.onNewTagCreated(newTag);
             })
+        }
+
+        const isDuplicate = selections.filter(tag => tag.label === newItem.label).length > 1;
+        console.log(isDuplicate);
+        if (isDuplicate) {
+            selections.splice(length - 1);
+            setIsInvalidTag(true);
         }
 
         setSelectedTags(selections);
@@ -156,12 +166,16 @@ const TaskForm = (props) => {
                     id="tag-typahead"
                     clearButton
                     maxHeight='110px'
+                    isInvalid={isInvalidTag}
                     multiple={true}
                     options={props.tagsProps.tags}
                     allowNew
                     newSelectionPrefix="Create new tag: "
                     onChange={handleTagsChanged}
                     selected={selectedTags} />
+                <Form.Control.Feedback type="invalid" style={isInvalidTag ? { display: "block" } : {}}>
+                    Cannot create tag that already exists
+                </Form.Control.Feedback>
             </FormGroup>
 
             <Button variant="primary" type="submit">
