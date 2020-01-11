@@ -20,7 +20,7 @@ const EditTask = (props) => {
      */
     const onSubmit = (editedTask) => {
         console.log(editedTask);
-        axios.put(`tasks/${props.task.id}`, {
+        axios.put(`/tasks/${props.task.id}`, {
             task: {...editedTask}
         }).then(result => {
             console.log(result.data);

@@ -42,7 +42,7 @@ const TasksList = (props) => {
      * After that, performs follow up actions accordingly and closes the delete dialog.
      */
     const onDeleteConfirmed = (id) => {
-        axios.delete(`tasks/${id}`)
+        axios.delete(`/tasks/${id}`)
             .then(() => {
                 props.onDelete(id);
             }

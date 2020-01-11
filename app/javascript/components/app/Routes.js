@@ -7,7 +7,7 @@ import Tasks from "./task/Tasks";
  */
 const Routes = () => {
     return (
-        <Route path="/app" render={() => <Tasks/>}/>
+        <Route path={["/app/tasks/tags/:tagId", "/app/tasks"]} component={Tasks}/>
     )
 };
 

@@ -5,6 +5,7 @@ import Alert from "react-bootstrap/Alert";
 import NewTask from "./NewTask";
 import TasksList from "./TasksList";
 import TaskNavigationBar from "./TaskNavigationBar";
+import Title from './Title';
 
 /**
  * Represents the tasks page where all the tasks are displayed.
@@ -26,14 +27,6 @@ class Tasks extends React.Component {
     }
 
     /**
-     * To initialise state.
-     */
-    constructor(props) {
-        super(props);
-        this.state.tasks = props.tasks;
-    }
-
-    /**
      * Fetch all the tasks to be displayed.
      */
     componentDidMount() {
@@ -45,13 +38,7 @@ class Tasks extends React.Component {
 
         axios.get("/categories")
             .then(result => {
-                const array = result.data.map(tag => {
-                    return {
-                        id: tag.id,
-                        label: tag.name
-                    }
-                })
-                this.setState({tags: array})
+                this.setState({tags: result.data})
             })
     }
 
@@ -161,8 +148,33 @@ class Tasks extends React.Component {
 
     render() {
         const tagsProps = {
-            tags: this.state.tags,
+            tags: this.state.tags.map(tag => {
+                return {
+                    id: tag.id,
+                    label: tag.name
+                }
+            }),
             onNewTagCreated: this.handleNewTagCreated
+        }
+
+        // To load the tile of the page
+        let title = "";
+        let visibleTasks = this.state.tasks;
+
+        const { match: { params } } = this.props;
+        if (params.tagId !== undefined) {
+            const id = parseInt(params.tagId);
+            const targetTag = this.state.tags.find(tag => tag.id === id);
+
+            if (targetTag !== undefined) {
+                title = targetTag.name;
+                visibleTasks = this.state.tasks.filter(task => {
+                    return task.tags.find(tag => tag.name === targetTag.name) !== undefined;
+                });
+                console.log(visibleTasks);
+            }
+        } else {
+            title = "All Tasks";
         }
 
         return (
@@ -177,8 +189,10 @@ class Tasks extends React.Component {
                     {this.state.alertProps.content}
                 </Alert>
 
+                <Title title={title}/>
+
                 <TasksList
-                    tasks={this.state.tasks}
+                    tasks={visibleTasks}
                     tagsProps={tagsProps}
                     onEdit={this.handleTaskEdited}
                     onEditFailure={this.showFailureAlert}
