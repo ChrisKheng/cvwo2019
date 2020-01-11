@@ -159,7 +159,7 @@ class Tasks extends React.Component {
         }
 
         // To load the title and tasks of the page (filter)
-        let title = "";
+        let titleTag = "";
         let visibleTasks = this.state.tasks;
 
         const { match: { params } } = this.props;
@@ -167,17 +167,18 @@ class Tasks extends React.Component {
             const id = parseInt(params.tagId);
             const targetTag = this.state.tags.find(tag => tag.id === id);
 
+            // Filter the list of tasks according to the tag specified
             if (targetTag !== undefined) {
-                title = targetTag.name;
+                titleTag = targetTag;
                 visibleTasks = this.state.tasks.filter(task => {
-                    return task.tags.find(tag => tag.name === targetTag.name) !== undefined;
+                    return task.tags.find(tag => tag.id === targetTag.id) !== undefined;
                 });
                 console.log(visibleTasks);
             } else {
                 return <PageNotFound/>
             }
         } else {
-            title = "All Tasks";
+            titleTag = {id: null, name: "All Tasks"};
         }
 
         return (
@@ -194,7 +195,7 @@ class Tasks extends React.Component {
                     {this.state.alertProps.content}
                 </Alert>
 
-                <Title title={title} />
+                <Title tag={titleTag} />
 
                 <TasksList
                     tasks={visibleTasks}
