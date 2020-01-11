@@ -6,6 +6,7 @@ import NewTask from "./NewTask";
 import TasksList from "./TasksList";
 import TaskNavigationBar from "./TaskNavigationBar";
 import Title from './Title';
+import PageNotFound from '../../utilities/PageNotFound';
 
 /**
  * Represents the tasks page where all the tasks are displayed.
@@ -38,7 +39,7 @@ class Tasks extends React.Component {
 
         axios.get("/categories")
             .then(result => {
-                this.setState({tags: result.data})
+                this.setState({ tags: result.data })
             })
     }
 
@@ -128,7 +129,7 @@ class Tasks extends React.Component {
     handleNewTagCreated = (tag) => {
         const array = [...this.state.tags];
         array.push(tag);
-        this.setState({tags: array});
+        this.setState({ tags: array });
     }
 
     //================================================= Others ========================================================
@@ -157,7 +158,7 @@ class Tasks extends React.Component {
             onNewTagCreated: this.handleNewTagCreated
         }
 
-        // To load the tile of the page
+        // To load the title and tasks of the page (filter)
         let title = "";
         let visibleTasks = this.state.tasks;
 
@@ -172,6 +173,8 @@ class Tasks extends React.Component {
                     return task.tags.find(tag => tag.name === targetTag.name) !== undefined;
                 });
                 console.log(visibleTasks);
+            } else {
+                return <PageNotFound/>
             }
         } else {
             title = "All Tasks";
@@ -179,7 +182,9 @@ class Tasks extends React.Component {
 
         return (
             <React.Fragment>
-                <TaskNavigationBar onClickNewTask={this.setModalVisibility.bind(this, true)} />
+                <TaskNavigationBar
+                    tags={this.state.tags}
+                    onClickNewTask={this.setModalVisibility.bind(this, true)} />
 
                 <Alert
                     dismissible
@@ -189,7 +194,7 @@ class Tasks extends React.Component {
                     {this.state.alertProps.content}
                 </Alert>
 
-                <Title title={title}/>
+                <Title title={title} />
 
                 <TasksList
                     tasks={visibleTasks}
