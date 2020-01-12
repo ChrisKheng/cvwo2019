@@ -16,7 +16,7 @@ const TaskNavigationBar = (props) => {
         tags = props.tags.map(tag => {
             return (
                 <NavDropDown.Item key={tag.id} as={Link} to={`/app/tasks/tags/${tag.id}`}>
-                    {tag.name}
+                    {tag.label}
                 </NavDropDown.Item>
             )
         })

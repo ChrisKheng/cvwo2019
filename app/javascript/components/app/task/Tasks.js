@@ -39,7 +39,13 @@ class Tasks extends React.Component {
 
         axios.get("/categories")
             .then(result => {
-                this.setState({ tags: result.data })
+                const tags = result.data.map(tag => {
+                    return {
+                        id: tag.id,
+                        label: tag.name
+                    }
+                })
+                this.setState({ tags: tags })
             })
     }
 
@@ -152,7 +158,7 @@ class Tasks extends React.Component {
             tags: this.state.tags.map(tag => {
                 return {
                     id: tag.id,
-                    label: tag.name
+                    label: tag.label
                 }
             }),
             onNewTagCreated: this.handleNewTagCreated
@@ -173,12 +179,11 @@ class Tasks extends React.Component {
                 visibleTasks = this.state.tasks.filter(task => {
                     return task.tags.find(tag => tag.id === targetTag.id) !== undefined;
                 });
-                console.log(visibleTasks);
             } else {
-                return <PageNotFound/>
+                return <PageNotFound />
             }
         } else {
-            titleTag = {id: null, name: "All Tasks"};
+            titleTag = { id: null, label: "All Tasks" };
         }
 
         return (

@@ -26,7 +26,7 @@ const Title = (props) => {
 
     return (
         <Jumbotron>
-            <h1>{props.tag.name}</h1>
+            <h1>{props.tag.label}</h1>
             {links}
         </Jumbotron>
     )    

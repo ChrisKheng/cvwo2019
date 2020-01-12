@@ -58,7 +58,6 @@ const TaskForm = (props) => {
     };
 
     const handleTagsChanged = (selections) => {
-        console.log(selections);
         setIsInvalidTag(false);
         if (selections.length === 0) {
             setSelectedTags(selections);
@@ -70,7 +69,6 @@ const TaskForm = (props) => {
 
         const isNewTag = props.tagsProps.tags.find(tag => tag.label === newItem.label) === undefined;
         if (isNewTag) {
-            console.log("U");
             axios.post('/categories', {
                 category: { name: newItem.label }
             }).then((result) => {
@@ -84,7 +82,6 @@ const TaskForm = (props) => {
         }
 
         const isDuplicate = selections.filter(tag => tag.label === newItem.label).length > 1;
-        console.log(isDuplicate);
         if (isDuplicate) {
             selections.splice(length - 1);
             setIsInvalidTag(true);
