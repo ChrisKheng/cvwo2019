@@ -154,7 +154,12 @@ class Tasks extends React.Component {
 
         this.setState({
             tags: tagsArray,
-            visibleTasks: visibleTasksArray
+            visibleTasks: visibleTasksArray,
+            isShowAlert: true,
+            alertProps: {
+                variant: 'success',
+                content: 'Tag edited! =D'
+            }
         });
     }
 
