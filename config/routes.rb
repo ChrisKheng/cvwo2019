@@ -10,6 +10,6 @@ Rails.application.routes.draw do
   delete 'tasks/:id', to: 'tasks#destroy'
   put 'tasks/:id', to: 'tasks#update'
 
-  resources :categories, except: [:new]
+  resources :categories, except: [:new, :edit, :show]
 end
 

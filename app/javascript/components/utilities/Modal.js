@@ -16,7 +16,7 @@ const Modal = (props) => {
         <FontAwesomeIcon icon={faTimes} onClick={props.onHide} size="lg" />
     );
 
-    let className = "custom-modal";
+    let className = "custom-modal".concat(" ", props.className);
 
     // Toggle modal visibility
     if (!props.show) {

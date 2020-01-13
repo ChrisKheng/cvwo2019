@@ -18,6 +18,7 @@ class Tasks extends React.Component {
     // content: message to be displayed in the alert
     state = {
         tasks: [],
+        visibleTasks: [],
         tags: [],
         isShowAlert: false,
         isShowModal: false,
@@ -138,6 +139,25 @@ class Tasks extends React.Component {
         this.setState({ tags: array });
     }
 
+    handleTagEdited = (editedTag) => {
+        // Update tag in tags array
+        const tagsArray = [...this.state.tags];
+        const index = tagsArray.findIndex(tag => tag.id === editedTag.id);
+        tagsArray.splice(index, 1, editedTag);
+
+        // Update the name of edited tag in its tasks 
+        const visibleTasksArray = [...this.state.visibleTasks];
+        visibleTasksArray.forEach(task => {
+            const oldTag = task.tags.find(tag => tag.id === editedTag.id);
+            oldTag.name = editedTag.label;
+        })
+
+        this.setState({
+            tags: tagsArray,
+            visibleTasks: visibleTasksArray
+        });
+    }
+
     //================================================= Others ========================================================
     /**
      * Closes the alert shown (can be used for both success and failure alert).
@@ -166,7 +186,7 @@ class Tasks extends React.Component {
 
         // To load the title and tasks of the page (filter)
         let titleTag = "";
-        let visibleTasks = this.state.tasks;
+        this.state.visibleTasks = this.state.tasks;
 
         const { match: { params } } = this.props;
         if (params.tagId !== undefined) {
@@ -176,7 +196,7 @@ class Tasks extends React.Component {
             // Filter the list of tasks according to the tag specified
             if (targetTag !== undefined) {
                 titleTag = targetTag;
-                visibleTasks = this.state.tasks.filter(task => {
+                this.state.visibleTasks = this.state.tasks.filter(task => {
                     return task.tags.find(tag => tag.id === targetTag.id) !== undefined;
                 });
             } else {
@@ -200,10 +220,12 @@ class Tasks extends React.Component {
                     {this.state.alertProps.content}
                 </Alert>
 
-                <Title tag={titleTag} />
+                <Title 
+                    tag={titleTag}
+                    onEditTag={this.handleTagEdited}/>
 
                 <TasksList
-                    tasks={visibleTasks}
+                    tasks={this.state.visibleTasks}
                     tagsProps={tagsProps}
                     onEdit={this.handleTaskEdited}
                     onEditFailure={this.showFailureAlert}
