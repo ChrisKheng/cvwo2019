@@ -28,6 +28,7 @@ class CategoriesController < ApplicationController
     end    
 
     def destroy
+        @category.destroy
     end    
 
     private

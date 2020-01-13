@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import Jumbotron from 'react-bootstrap/Jumbotron';
 import Nav from 'react-bootstrap/Nav';
 import EditTagLabel from './EditTagLabel';
+import DeleteTag from './DeleteTag';
 
 /**
  * Title JSX attribues
@@ -10,7 +11,8 @@ import EditTagLabel from './EditTagLabel';
  * onEditTag
  */
 const Title = (props) => {
-    const [isShowEdit, setIsShowEdit] = useState(false);
+    const [isShowEditForm, setIsShowEditForm] = useState(false);
+    const [isShowDeleteDialog, setIsShowDeleteDialog] = useState(false);
 
     let links = null;
 
@@ -18,17 +20,15 @@ const Title = (props) => {
         links = (
             <Nav>
                 <Nav.Item>
-                    <Nav.Link onClick={() => setIsShowEdit(true)}>Edit</Nav.Link>
+                    <Nav.Link onClick={() => setIsShowEditForm(true)}>Edit</Nav.Link>
                 </Nav.Item>
 
                 <Nav.Item>
-                    <Nav.Link>Delete</Nav.Link>
+                    <Nav.Link onClick={() => setIsShowDeleteDialog(true)}>Delete</Nav.Link>
                 </Nav.Item>
             </Nav>
         )
     }
-
-    console.log(props.tag);
 
     return (
         <div>
@@ -38,9 +38,14 @@ const Title = (props) => {
             </Jumbotron>
             <EditTagLabel
                 tag={props.tag}
-                show={isShowEdit}
-                onHide={() => setIsShowEdit(false)}
+                show={isShowEditForm}
+                onHide={() => setIsShowEditForm(false)}
                 onEdit={props.onEditTag} />
+            <DeleteTag
+                tag={props.tag}
+                show={isShowDeleteDialog}
+                onClose={() => setIsShowDeleteDialog(false)}
+                onDelete={props.onDeleteTag}/>    
         </div>
     )
 }

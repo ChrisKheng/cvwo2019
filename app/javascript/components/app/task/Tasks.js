@@ -1,5 +1,6 @@
 import React from 'react';
 import axios from 'axios';
+import {Redirect} from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Alert from "react-bootstrap/Alert";
 import NewTask from "./NewTask";
@@ -25,7 +26,8 @@ class Tasks extends React.Component {
         alertProps: {
             variant: null,
             content: null
-        }
+        },
+        isRedirectToAllTasks: false
     }
 
     /**
@@ -48,6 +50,12 @@ class Tasks extends React.Component {
                 })
                 this.setState({ tags: tags })
             })
+    }
+
+    componentDidUpdate() {
+        if (this.state.isRedirectToAllTasks) {
+            this.setState({isRedirectToAllTasks: false});
+        }
     }
 
     //================================================= Task ==========================================================
@@ -163,6 +171,31 @@ class Tasks extends React.Component {
         });
     }
 
+    handleTagDeleted = (deletedTag) => {
+        // Remove the deleted tag from tags array
+        const tagsArray = [...this.state.tags];        
+        const index = tagsArray.findIndex(tag => tag.id === deletedTag.id);
+        tagsArray.splice(index, 1);
+
+        // Remove the deleted tag from its tasks
+        const visibleTasksArray = [...this.state.visibleTasks];
+        visibleTasksArray.forEach(task => {
+            const index = task.tags.findIndex(tag => tag.id === deletedTag.id);
+            task.tags.splice(index, 1);
+        })
+
+        this.setState({
+            tags: tagsArray,
+            visibleTasks: visibleTasksArray,
+            isRedirectToAllTasks: true,
+            isShowAlert: true,
+            alertProps: {
+                variant: 'success',
+                content: 'Tag deleted! =D'
+            }
+        });
+    }
+
     //================================================= Others ========================================================
     /**
      * Closes the alert shown (can be used for both success and failure alert).
@@ -179,6 +212,11 @@ class Tasks extends React.Component {
     }
 
     render() {
+        // Handle redirection
+        if (this.state.isRedirectToAllTasks) {
+            return <Redirect to='/app/tasks'/>;
+        }
+
         const tagsProps = {
             tags: this.state.tags.map(tag => {
                 return {
@@ -227,7 +265,8 @@ class Tasks extends React.Component {
 
                 <Title 
                     tag={titleTag}
-                    onEditTag={this.handleTagEdited}/>
+                    onEditTag={this.handleTagEdited}
+                    onDeleteTag={this.handleTagDeleted}/>
 
                 <TasksList
                     tasks={this.state.visibleTasks}
