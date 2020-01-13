@@ -36,16 +36,20 @@ const Title = (props) => {
                 <h1>{props.tag.label}</h1>
                 {links}
             </Jumbotron>
+
             <EditTagLabel
                 tag={props.tag}
                 show={isShowEditForm}
                 onHide={() => setIsShowEditForm(false)}
-                onEdit={props.onEditTag} />
+                onEdit={props.onEditTag}
+                onEditFail={props.onEditTagFail} />
+
             <DeleteTag
                 tag={props.tag}
                 show={isShowDeleteDialog}
                 onClose={() => setIsShowDeleteDialog(false)}
-                onDelete={props.onDeleteTag}/>    
+                onDelete={props.onDeleteTag}
+                onDeleteFail={props.onDeleteTagFail}/>    
         </div>
     )
 }

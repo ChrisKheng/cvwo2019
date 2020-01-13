@@ -10,6 +10,7 @@ import Button from 'react-bootstrap/Button';
  * show
  * onHide
  * onEdit
+ * onEditFail
  * tag 
  */
 const EditTagLabel = (props) => {
@@ -56,8 +57,12 @@ const EditTagLabel = (props) => {
                 id: result.data.id,
                 label: result.data.name
             }
-            handleOnClose();
             props.onEdit(editedTag);
+        }).catch(error => {
+            setNewLabel(props.tag.label);
+            props.onEditFail(error.message);
+        }).finally(() => {
+            handleOnClose();
         })
     }
 

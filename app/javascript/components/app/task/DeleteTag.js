@@ -9,6 +9,7 @@ import ConfirmationDialog from '../../utilities/ConfirmationDialog';
  * show
  * onClose
  * onDelete
+ * onDeleteFail
  */
 const DeleteTag = (props) => {
     const handleDeleteTag = () => {
@@ -16,6 +17,10 @@ const DeleteTag = (props) => {
         .then(result => {
             console.log(result);
             props.onDelete(props.tag);
+        }).catch(error => {
+            props.onDeleteFail(error.message);
+        }).finally(() => {
+            props.onClose();
         })
     }
 

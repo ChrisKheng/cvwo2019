@@ -266,7 +266,9 @@ class Tasks extends React.Component {
                 <Title 
                     tag={titleTag}
                     onEditTag={this.handleTagEdited}
-                    onDeleteTag={this.handleTagDeleted}/>
+                    onEditTagFail={this.showFailureAlert}
+                    onDeleteTag={this.handleTagDeleted}
+                    onDeleteTagFail={this.showFailureAlert}/>
 
                 <TasksList
                     tasks={this.state.visibleTasks}
