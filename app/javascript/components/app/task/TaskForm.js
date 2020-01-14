@@ -89,9 +89,12 @@ const TaskForm = (props) => {
                     label: result.data.name
                 }
                 selections.splice(length - 1, 1, newTag);
-                props.tagsProps.onNewTagCreated(newTag);
                 setSelectedTags(selections);
+                props.tagsProps.onNewTagCreated(newTag);
             })
+        } else {
+            // The added tag is a tag that already exists
+            setSelectedTags(selections);
         }
     }
 
