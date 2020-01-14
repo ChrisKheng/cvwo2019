@@ -1,9 +1,8 @@
 import React, { useState } from 'react';
-import axios from 'axios';
 import CardColumns from "react-bootstrap/CardColumns";
 import Card from "react-bootstrap/Card";
-import ConfirmationDialog from "../../utilities/ConfirmationDialog";
 import EditTask from "./EditTask";
+import DeleteTask from './DeleteTask';
 
 /**
  * Represents the list of displayed tasks.
@@ -13,7 +12,7 @@ import EditTask from "./EditTask";
  * onEdit: function that will be triggered when a task is edited successfully.
  * onEditFailure: function that will be triggered when editing a task fails.
  * onDelete: function that will be triggered when a task is deleted successfully.
- * onDeleteFailure: function that will be triggered when deleting a task fails.
+ * onDeleteFail: function that will be triggered when deleting a task fails.
  */
 const TasksList = (props) => {
     const [isShowEditDialog, setEditDialogVisibility] = useState(false);
@@ -37,30 +36,14 @@ const TasksList = (props) => {
         setDeleteDialogVisibility(true);
     };
 
-    /**
-     * Sends a DELETE request to the app server.
-     * After that, performs follow up actions accordingly and closes the delete dialog.
-     */
-    const onDeleteConfirmed = (id) => {
-        axios.delete(`/tasks/${id}`)
-            .then(() => {
-                props.onDelete(id);
-            }
-            ).catch((error) => {
-                props.onDeleteFailure(error.message);
-            }
-            ).finally(() => {
-                setDeleteDialogVisibility(false);
-            }
-            )
-    };
-
     let cards = null;
 
     // Display the tasks if any
     if (props.tasks !== undefined) {
         cards = props.tasks.map((task) => {
             let tags = null;
+
+            // Display the tags if any
             if (task.tags.length !== 0) {
                 const categories = `Tags: ${task.tags.map(tag => tag.name).join(", ")}`;
                 tags = (
@@ -89,6 +72,7 @@ const TasksList = (props) => {
             <CardColumns className="dashboard">
                 {cards}
             </CardColumns>
+
             <EditTask
                 tagsProps = {props.tagsProps}
                 show={isShowEditDialog}
@@ -96,10 +80,13 @@ const TasksList = (props) => {
                 onEdit={props.onEdit}
                 onEditFailure={props.onEditFailure}
                 task={task} />
-            <ConfirmationDialog
+
+            <DeleteTask
                 show={isShowDeleteDialog}
                 onClose={() => setDeleteDialogVisibility(false)}
-                onConfirm={() => onDeleteConfirmed(taskId)} />
+                id={taskId}
+                onDelete={props.onDelete}
+                onDeleteFail={props.onDeleteFail}/>
         </div>
     )
 };

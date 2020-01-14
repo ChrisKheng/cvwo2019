@@ -277,7 +277,7 @@ class Tasks extends React.Component {
                     onEdit={this.handleTaskEdited}
                     onEditFailure={this.showFailureAlert}
                     onDelete={this.handleTaskDeleted}
-                    onDeleteFailure={this.showFailureAlert} />
+                    onDeleteFail={this.showFailureAlert} />
 
                 <NewTask
                     tagsProps={tagsProps}
