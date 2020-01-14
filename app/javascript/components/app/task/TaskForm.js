@@ -17,6 +17,7 @@ axios.defaults.headers.common['X-CSRF-TOKEN'] = csrfToken;
  * content: an optional task object that is passed to prefill the task form. The task object contains
  *          title and description.
  * onSubmit: function that will be triggered when the submit button is clicked.
+ * onNewTagCreated
  */
 const TaskForm = (props) => {
     //================================================ Initialisation =================================================
@@ -48,7 +49,6 @@ const TaskForm = (props) => {
     const [isInvalidTag, setIsInvalidTag] = useState(false);
 
     //============================================== Handle Input Change ==============================================
-
     const handleTitleChanged = (event) => {
         setTitle(event.target.value);
     };
@@ -59,14 +59,26 @@ const TaskForm = (props) => {
 
     const handleTagsChanged = (selections) => {
         setIsInvalidTag(false);
-        if (selections.length === 0) {
-            setSelectedTags(selections);
+
+        let length = selections.length;
+
+        // If length is 0 then don't have to perform any operations after this if statement
+        if (length === 0) {
+            setSelectedTags([]);
             return;
         }
 
-        let length = selections.length;
+        // Check the validity of the added tag
         const newItem = selections[length - 1];
+        const isDuplicate = selections.filter(tag => tag.label === newItem.label).length > 1;
+        const isExceedLength = newItem.label.length > 60;
+        if (isDuplicate || isExceedLength) {
+            selections.splice(length - 1);
+            setIsInvalidTag(true);
+            return;
+        }
 
+        // Create the added tag on server side if the added tag is a new tag that hasn't existed
         const isNewTag = props.tagsProps.tags.find(tag => tag.label === newItem.label) === undefined;
         if (isNewTag) {
             axios.post('/categories', {
@@ -78,16 +90,9 @@ const TaskForm = (props) => {
                 }
                 selections.splice(length - 1, 1, newTag);
                 props.tagsProps.onNewTagCreated(newTag);
+                setSelectedTags(selections);
             })
         }
-
-        const isDuplicate = selections.filter(tag => tag.label === newItem.label).length > 1;
-        if (isDuplicate) {
-            selections.splice(length - 1);
-            setIsInvalidTag(true);
-        }
-
-        setSelectedTags(selections);
     }
 
     //========================================= Handle Submit and Validation ==========================================
@@ -170,7 +175,7 @@ const TaskForm = (props) => {
                     onChange={handleTagsChanged}
                     selected={selectedTags} />
                 <Form.Control.Feedback type="invalid" style={isInvalidTag ? { display: "block" } : {}}>
-                    Cannot create tag that already exists
+                    Cannot create tag that already exists or exceeds 60 characters
                 </Form.Control.Feedback>
             </FormGroup>
 

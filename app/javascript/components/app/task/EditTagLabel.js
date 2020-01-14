@@ -42,7 +42,8 @@ const EditTagLabel = (props) => {
     const handleSubmit = (event) => {
         event.preventDefault();
 
-        if (newLabel.trim().length === 0) {
+        const length = newLabel.trim().length;
+        if (length === 0 || length > 60) {
             setIsInvalidTag(true);
             return;
         }
@@ -75,7 +76,9 @@ const EditTagLabel = (props) => {
                         value={newLabel}
                         onChange={handleLabelChange}
                         isInvalid={isInvalidTag} />
-                    <Form.Control.Feedback type="invalid">Tag name cannot be empty</Form.Control.Feedback>
+                    <Form.Control.Feedback type="invalid">
+                        Tag name cannot be empty or exceed 60 characters
+                    </Form.Control.Feedback>
                 </Form.Group>
                 <Button variant="primary" type="submit">Change</Button>
             </Form>
