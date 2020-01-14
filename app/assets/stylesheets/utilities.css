@@ -41,3 +41,7 @@
 .dialog button {
     margin: 2px;
 }
+
+#custom-alert {
+    margin: 0px;
+}

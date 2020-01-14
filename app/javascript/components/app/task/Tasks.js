@@ -256,6 +256,7 @@ class Tasks extends React.Component {
                     onClickNewTask={this.setModalVisibility.bind(this, true)} />
 
                 <Alert
+                    id="custom-alert"
                     dismissible
                     variant={this.state.alertProps.variant}
                     show={this.state.isShowAlert}

@@ -1,0 +1,25 @@
+.typeahead-invalid > div{
+    box-shadow: 0px 0px 5px red;
+}
+
+#tag-title {
+    margin: 0px;
+    background-color: whitesmoke;
+}
+
+.tag-nav a {
+    margin: 0px 20px 0px 0px;
+    padding: 0px;
+}
+
+.dropdown-menu {
+    max-height: 300px;
+    width: 150px;
+    overflow-y: scroll;
+}
+
+.dropdown-menu a {
+    white-space: nowrap; 
+    text-overflow: ellipsis;
+    overflow-x: hidden;
+}

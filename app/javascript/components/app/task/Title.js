@@ -18,7 +18,7 @@ const Title = (props) => {
 
     if (props.tag.id !== null) {
         links = (
-            <Nav>
+            <Nav className="tag-nav">
                 <Nav.Item>
                     <Nav.Link onClick={() => setIsShowEditForm(true)}>Edit</Nav.Link>
                 </Nav.Item>
@@ -32,7 +32,7 @@ const Title = (props) => {
 
     return (
         <div>
-            <Jumbotron>
+            <Jumbotron id="tag-title">
                 <h1>{props.tag.label}</h1>
                 {links}
             </Jumbotron>
