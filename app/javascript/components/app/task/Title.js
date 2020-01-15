@@ -8,6 +8,7 @@ import DeleteTag from './DeleteTag';
  * Title JSX attribues
  * 
  * tag: must be provided, an object
+ * tags:
  * onEditTag
  */
 const Title = (props) => {
@@ -39,6 +40,7 @@ const Title = (props) => {
 
             <EditTagLabel
                 tag={props.tag}
+                tags={props.tags}
                 show={isShowEditForm}
                 onHide={() => setIsShowEditForm(false)}
                 onEdit={props.onEditTag}

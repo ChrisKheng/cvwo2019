@@ -17,7 +17,8 @@ axios.defaults.headers.common['X-CSRF-TOKEN'] = csrfToken;
  * content: an optional task object that is passed to prefill the task form. The task object contains
  *          title and description.
  * onSubmit: function that will be triggered when the submit button is clicked.
- * onNewTagCreated
+ * onNewTagCreated:
+ * onNewTagFail:
  */
 const TaskForm = (props) => {
     //================================================ Initialisation =================================================
@@ -87,6 +88,9 @@ const TaskForm = (props) => {
                 selections.splice(length - 1, 1, result.data);
                 setSelectedTags(selections);
                 props.tagsProps.onNewTagCreated(result.data);
+            }).catch(error => {
+                selections.splice(length - 1, 1);
+                props.tagsProps.onNewTagFail(error.message);
             })
         } else {
             // The added tag is a tag that already exists
@@ -146,7 +150,9 @@ const TaskForm = (props) => {
                     value={title}
                     onChange={handleTitleChanged}
                     isInvalid={isTitleInvalid} />
-                <Form.Control.Feedback type="invalid">Title cannot be empty</Form.Control.Feedback>
+                <Form.Control.Feedback type="invalid" className="custom-invalid-feedback">
+                    Title cannot be empty
+                </Form.Control.Feedback>
             </FormGroup>
 
             <FormGroup>
@@ -158,7 +164,9 @@ const TaskForm = (props) => {
                     value={description}
                     onChange={handleDescriptionChanged}
                     isInvalid={isDescriptionInvalid} />
-                <Form.Control.Feedback type="invalid">Description cannot be empty</Form.Control.Feedback>
+                <Form.Control.Feedback type="invalid" className="custom-invalid-feedback">
+                    Description cannot be empty
+                </Form.Control.Feedback>
             </FormGroup>
 
             <FormGroup>
@@ -173,7 +181,10 @@ const TaskForm = (props) => {
                     newSelectionPrefix="Create new tag: "
                     onChange={handleTagsChanged}
                     selected={selectedTags} />
-                <Form.Control.Feedback type="invalid" style={isInvalidTag ? { display: "block" } : {}}>
+                <Form.Control.Feedback
+                    type="invalid"
+                    className="custom-invalid-feedback"
+                    style={isInvalidTag ? { display: "block" } : {}}>
                     Cannot create tag that already exists or exceeds 60 characters
                 </Form.Control.Feedback>
             </FormGroup>

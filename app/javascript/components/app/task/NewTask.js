@@ -24,8 +24,7 @@ class NewTask extends React.Component {
             task: { ...newTask }
         }).then(result => {
             this.props.onNewTaskSuccess(result.data);
-        }
-        ).catch((error) => {
+        }).catch((error) => {
             this.props.onNewTaskFail(error.message);
         })
     }
@@ -34,7 +33,9 @@ class NewTask extends React.Component {
         return (
             <Modal show={this.props.show} onHide={this.props.onHide}>
                 <h1>New Task</h1>
-                <TaskForm onSubmit={this.handleSubmit} tagsProps={this.props.tagsProps}/>
+                <TaskForm
+                    onSubmit={this.handleSubmit}
+                    tagsProps={this.props.tagsProps}/>
             </Modal>
         )
     }

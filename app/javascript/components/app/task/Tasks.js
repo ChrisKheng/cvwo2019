@@ -38,11 +38,15 @@ class Tasks extends React.Component {
         axios.get("/tasks")
             .then(result => {
                this.setState({ tasks: [...result.data] });
+            }).catch(error => {
+                this.showFailAlert(error.message);
             })
 
         axios.get("/categories")
             .then(result => {
                this.setState({ tags: result.data })
+            }).catch(error => {
+                this.showFailAlert(error.message);
             })
     }
 
@@ -212,13 +216,9 @@ class Tasks extends React.Component {
         }
 
         const tagsProps = {
-            tags: this.state.tags.map(tag => {
-                return {
-                    id: tag.id,
-                    label: tag.label
-                }
-            }),
-            onNewTagCreated: this.handleNewTagCreated
+            tags: this.state.tags,
+            onNewTagCreated: this.handleNewTagCreated,
+            onNewTagFail: this.showFailAlert
         }
 
         // To load the title and tasks of the page (filter)
@@ -260,6 +260,7 @@ class Tasks extends React.Component {
 
                 <Title 
                     tag={titleTag}
+                    tags={this.state.tags}
                     onEditTag={this.handleTagEdited}
                     onEditTagFail={this.showFailAlert}
                     onDeleteTag={this.handleTagDeleted}
@@ -271,14 +272,14 @@ class Tasks extends React.Component {
                     onEdit={this.handleTaskEdited}
                     onEditFail={this.showFailAlert}
                     onDelete={this.handleTaskDeleted}
-                    onDeleteFail={this.showFailAlert} />
+                    onDeleteFail={this.showFailAlert}/>
 
                 <NewTask
                     tagsProps={tagsProps}
                     show={this.state.isShowModal}
                     onHide={this.setModalVisibility.bind(this, false)}
                     onNewTaskSuccess={this.handleNewTaskSubmitted.bind(this)}
-                    onNewTaskFail={this.handleNewTaskFail.bind(this)} />
+                    onNewTaskFail={this.handleNewTaskFail.bind(this)}/>
             </React.Fragment>
         )
     }

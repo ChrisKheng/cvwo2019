@@ -11,6 +11,7 @@ import TaskForm from "./TaskForm";
  * task: task object to prefill the edit task form.
  * onEdit: function that will be triggered when a task is edited successfully.
  * onEditFail: function that will be triggered when edit task fails.
+ * onNewTagFail:
  * onHide: function that will be triggered when the edit task form modal's close button is closed.
  */
 const EditTask = (props) => {
@@ -20,25 +21,23 @@ const EditTask = (props) => {
      */
     const onSubmit = (editedTask) => {
         axios.put(`/tasks/${props.task.id}`, {
-            task: {...editedTask}
+            task: { ...editedTask }
         }).then(result => {
-               props.onEdit(result.data);
-            })
-            .catch(error => {
-                props.onEditFail(error.message);
-            })
-            .finally(() => {
-                props.onHide();
-            })
+            props.onEdit(result.data);
+        }).catch(error => {
+            props.onEditFail(error.message);
+        }).finally(() => {
+            props.onHide();
+        })
     };
 
     return (
         <Modal show={props.show} onHide={props.onHide}>
             <h1>Edit Task</h1>
             <TaskForm
-            content={{...props.task}}
-            onSubmit={onSubmit}
-            tagsProps={props.tagsProps}/>
+                content={{ ...props.task }}
+                tagsProps={props.tagsProps}
+                onSubmit={onSubmit}/>
         </Modal>
     )
 };
