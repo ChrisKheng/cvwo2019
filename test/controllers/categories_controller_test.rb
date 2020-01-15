@@ -12,7 +12,7 @@ class CategoriesControllerTest < ActionDispatch::IntegrationTest
     
     test "should create new category" do
         assert_difference  'Category.count', 1 do
-            post categories_path, params: {category: {name: "workout"}}
+            post categories_path, params: {category: {label: "workout"}}
         end    
         
         newCategory = Category.find_by name: "workout"
