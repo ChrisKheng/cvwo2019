@@ -38,7 +38,7 @@ const TaskForm = (props) => {
         initialContent.tags = initialContent.tags.map(tag => {
             return {
                 id: tag.id,
-                label: tag.name
+                label: tag.label
             }
         });
     }
@@ -82,15 +82,11 @@ const TaskForm = (props) => {
         const isNewTag = props.tagsProps.tags.find(tag => tag.label === newItem.label) === undefined;
         if (isNewTag) {
             axios.post('/categories', {
-                category: { name: newItem.label }
+                category: { label: newItem.label }
             }).then((result) => {
-                const newTag = {
-                    id: result.data.id,
-                    label: result.data.name
-                }
-                selections.splice(length - 1, 1, newTag);
+                selections.splice(length - 1, 1, result.data);
                 setSelectedTags(selections);
-                props.tagsProps.onNewTagCreated(newTag);
+                props.tagsProps.onNewTagCreated(result.data);
             })
         } else {
             // The added tag is a tag that already exists

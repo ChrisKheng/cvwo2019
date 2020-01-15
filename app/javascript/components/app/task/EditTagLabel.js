@@ -50,15 +50,10 @@ const EditTagLabel = (props) => {
 
         axios.put(`/categories/${props.tag.id}`, {
             category: {
-                id: props.tag.id,
-                name: newLabel.trim()
+                label: newLabel.trim()
             }
         }).then(result => {
-            const editedTag = {
-                id: result.data.id,
-                label: result.data.name
-            }
-            props.onEdit(editedTag);
+           props.onEdit(result.data);
         }).catch(error => {
             setNewLabel(props.tag.label);
             props.onEditFail(error.message);

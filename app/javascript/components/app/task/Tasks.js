@@ -37,18 +37,12 @@ class Tasks extends React.Component {
         // AJAX call
         axios.get("/tasks")
             .then(result => {
-                this.setState({ tasks: [...result.data] });
+               this.setState({ tasks: [...result.data] });
             })
 
         axios.get("/categories")
             .then(result => {
-                const tags = result.data.map(tag => {
-                    return {
-                        id: tag.id,
-                        label: tag.name
-                    }
-                })
-                this.setState({ tags: tags })
+               this.setState({ tags: result.data })
             })
     }
 
@@ -77,9 +71,9 @@ class Tasks extends React.Component {
     }
 
     /** 
-     * Closes the new task modal and fires up a failure alert with the error message given.
+     * Closes the new task modal and fires up a fail alert with the error message given.
      */
-    handleNewTaskFailure = (errorMessage) => {
+    handleNewTaskFail = (errorMessage) => {
         this.setState({
             isShowModal: false,
             isShowAlert: true,
@@ -128,9 +122,9 @@ class Tasks extends React.Component {
     }
 
     /**
-     * Fires up a failure alert showing the errorMessage given.
+     * Fires up a fail alert showing the errorMessage given.
      */
-    showFailureAlert = (errorMessage) => {
+    showFailAlert = (errorMessage) => {
         this.setState({
             isShowAlert: true,
             alertProps: {
@@ -157,7 +151,7 @@ class Tasks extends React.Component {
         const visibleTasksArray = [...this.state.visibleTasks];
         visibleTasksArray.forEach(task => {
             const oldTag = task.tags.find(tag => tag.id === editedTag.id);
-            oldTag.name = editedTag.label;
+            oldTag.label = editedTag.label;
         })
 
         this.setState({
@@ -198,7 +192,7 @@ class Tasks extends React.Component {
 
     //================================================= Others ========================================================
     /**
-     * Closes the alert shown (can be used for both success and failure alert).
+     * Closes the alert shown (can be used for both success and fail alert).
      */
     closeAlert = () => {
         this.setState({ isShowAlert: false });
@@ -267,24 +261,24 @@ class Tasks extends React.Component {
                 <Title 
                     tag={titleTag}
                     onEditTag={this.handleTagEdited}
-                    onEditTagFail={this.showFailureAlert}
+                    onEditTagFail={this.showFailAlert}
                     onDeleteTag={this.handleTagDeleted}
-                    onDeleteTagFail={this.showFailureAlert}/>
+                    onDeleteTagFail={this.showFailAlert}/>
 
                 <TasksList
                     tasks={this.state.visibleTasks}
                     tagsProps={tagsProps}
                     onEdit={this.handleTaskEdited}
-                    onEditFailure={this.showFailureAlert}
+                    onEditFail={this.showFailAlert}
                     onDelete={this.handleTaskDeleted}
-                    onDeleteFail={this.showFailureAlert} />
+                    onDeleteFail={this.showFailAlert} />
 
                 <NewTask
                     tagsProps={tagsProps}
                     show={this.state.isShowModal}
                     onHide={this.setModalVisibility.bind(this, false)}
                     onNewTaskSuccess={this.handleNewTaskSubmitted.bind(this)}
-                    onNewTaskFailure={this.handleNewTaskFailure.bind(this)} />
+                    onNewTaskFail={this.handleNewTaskFail.bind(this)} />
             </React.Fragment>
         )
     }

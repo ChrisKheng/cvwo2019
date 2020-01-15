@@ -48,7 +48,11 @@ class TasksController < ApplicationController
 
   def getTaskHash(task)
     hash = task.attributes
-    hash["tags"] = task.categories.to_ary.map{|category| category.attributes}
+    hash["tags"] = task.categories.to_ary.map{|category|
+      attributes = category.attributes
+      attributes["label"] = attributes.delete "name"
+      attributes
+    }
     hash
   end   
 

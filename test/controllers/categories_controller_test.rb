@@ -10,11 +10,6 @@ class CategoriesControllerTest < ActionDispatch::IntegrationTest
         assert_response :success
     end
     
-    test "should get show" do
-        get category_path(@category)
-        assert_response :success
-    end    
-
     test "should create new category" do
         assert_difference  'Category.count', 1 do
             post categories_path, params: {category: {name: "workout"}}

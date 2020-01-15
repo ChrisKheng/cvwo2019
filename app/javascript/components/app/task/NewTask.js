@@ -11,7 +11,7 @@ import Modal from "../../utilities/Modal";
  * show: toggle the visibility of the new task form modal.
  * onHide: function that will trigger when the new task form modal's close button is closed.
  * onNewTaskSuccess: function that will be triggered when a new task is created successfully.
- * onNewTaskFailure: function that will be triggered when creating a new task fails.
+ * onNewTaskFail: function that will be triggered when creating a new task fails.
  */
 class NewTask extends React.Component {
     /**
@@ -26,7 +26,7 @@ class NewTask extends React.Component {
             this.props.onNewTaskSuccess(result.data);
         }
         ).catch((error) => {
-            this.props.onNewTaskFailure(error.message);
+            this.props.onNewTaskFail(error.message);
         })
     }
 

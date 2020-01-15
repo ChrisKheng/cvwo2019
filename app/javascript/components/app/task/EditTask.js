@@ -10,7 +10,7 @@ import TaskForm from "./TaskForm";
  * show: toggle the visibility of the edit task form modal.
  * task: task object to prefill the edit task form.
  * onEdit: function that will be triggered when a task is edited successfully.
- * onEditFailure: function that will be triggered when edit task fails.
+ * onEditFail: function that will be triggered when edit task fails.
  * onHide: function that will be triggered when the edit task form modal's close button is closed.
  */
 const EditTask = (props) => {
@@ -22,10 +22,10 @@ const EditTask = (props) => {
         axios.put(`/tasks/${props.task.id}`, {
             task: {...editedTask}
         }).then(result => {
-                props.onEdit(result.data);
+               props.onEdit(result.data);
             })
             .catch(error => {
-                props.onEditFailure(error.message);
+                props.onEditFail(error.message);
             })
             .finally(() => {
                 props.onHide();

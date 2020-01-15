@@ -3,17 +3,14 @@ class CategoriesController < ApplicationController
 
     def index
         @categories =  Category.all
-        render json: @categories
+        response = @categories.map{|category| getCategoryHash(category)}
+        render json: response
     end
     
-    def show
-        render json: "dummy"
-    end
-
     def create
         @category = Category.new(category_param)
         if @category.save
-            render json: @category
+            render json: getCategoryHash(@category)
         else
             render json: @category.errors.full_messages
         end    
@@ -21,7 +18,7 @@ class CategoriesController < ApplicationController
 
     def update
         if @category.update(category_param)
-            render json: @category
+            render json: getCategoryHash(@category)
         else
             render json: @category.errors.full_messages
         end    
@@ -36,8 +33,16 @@ class CategoriesController < ApplicationController
         @category = Category.find(params[:id])
     end    
 
+    def getCategoryHash(category)
+        hash = category.attributes
+        hash["label"] = hash.delete "name"
+        hash
+    end    
+
     # Check and filter params that are passed in
     def category_param
-        params.require(:category).permit(:name, :id)
+        result = params.require(:category).permit(:label)
+        result["name"] = result.delete "label"
+        result
     end    
 end    

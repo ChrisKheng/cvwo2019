@@ -10,7 +10,7 @@ import DeleteTask from './DeleteTask';
  * TasksList JSX attributes
  * tasks: an array of tasks that will be displayed in the tasklist.
  * onEdit: function that will be triggered when a task is edited successfully.
- * onEditFailure: function that will be triggered when editing a task fails.
+ * onEditFail: function that will be triggered when editing a task fails.
  * onDelete: function that will be triggered when a task is deleted successfully.
  * onDeleteFail: function that will be triggered when deleting a task fails.
  */
@@ -45,7 +45,7 @@ const TasksList = (props) => {
 
             // Display the tags if any
             if (task.tags.length !== 0) {
-                const categories = `Tags: ${task.tags.map(tag => tag.name).join(", ")}`;
+                const categories = `Tags: ${task.tags.map(tag => tag.label).join(", ")}`;
                 tags = (
                     <Card.Footer className="text-muted">
                         <small>{categories}</small>
@@ -78,7 +78,7 @@ const TasksList = (props) => {
                 show={isShowEditDialog}
                 onHide={() => setEditDialogVisibility(false)}
                 onEdit={props.onEdit}
-                onEditFailure={props.onEditFailure}
+                onEditFail={props.onEditFail}
                 task={task} />
 
             <DeleteTask
