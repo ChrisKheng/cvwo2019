@@ -27,7 +27,7 @@
 }
 
 .display-block {
-    display: inline-block;
+    display: block;
 }
 
 .display-none {
@@ -44,4 +44,8 @@
 
 #custom-alert {
     margin: 0px;
+}
+
+.custom-invalid-feedback {
+    white-space: normal;
 }

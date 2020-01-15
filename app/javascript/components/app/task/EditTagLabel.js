@@ -12,6 +12,7 @@ import Button from 'react-bootstrap/Button';
  * onEdit
  * onEditFail
  * tag 
+ * tags
  */
 const EditTagLabel = (props) => {
     const [newLabel, setNewLabel] = useState('');
@@ -42,18 +43,24 @@ const EditTagLabel = (props) => {
     const handleSubmit = (event) => {
         event.preventDefault();
 
-        const length = newLabel.trim().length;
-        if (length === 0 || length > 60) {
+        const newName = newLabel.trim();
+        const length = newName.length;
+        const isInvalidLength = length === 0 || length > 60;
+
+        const isExist = props.tags.find(tag => tag.label === newName) !== undefined
+            && newName !== props.tag.label;
+        if (isInvalidLength || isExist) {
             setIsInvalidTag(true);
             return;
         }
 
         axios.put(`/categories/${props.tag.id}`, {
             category: {
-                label: newLabel.trim()
+                label: newName
             }
         }).then(result => {
-           props.onEdit(result.data);
+            setNewLabel(result.data.label);
+            props.onEdit(result.data);
         }).catch(error => {
             setNewLabel(props.tag.label);
             props.onEditFail(error.message);
@@ -71,8 +78,8 @@ const EditTagLabel = (props) => {
                         value={newLabel}
                         onChange={handleLabelChange}
                         isInvalid={isInvalidTag} />
-                    <Form.Control.Feedback type="invalid">
-                        Tag name cannot be empty or exceed 60 characters
+                    <Form.Control.Feedback type="invalid" className="custom-invalid-feedback">
+                        Tag name cannot be empty, exceed 60 characters, or already exists
                     </Form.Control.Feedback>
                 </Form.Group>
                 <Button variant="primary" type="submit">Change</Button>
