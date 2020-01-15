@@ -36,14 +36,13 @@ const TasksList = (props) => {
         setDeleteDialogVisibility(true);
     };
 
-    let cards = null;
 
     // Display the tasks if any
+    let cards = null;
     if (props.tasks !== undefined) {
         cards = props.tasks.map((task) => {
-            let tags = null;
-
             // Display the tags if any
+            let tags = null;
             if (task.tags.length !== 0) {
                 const categories = `Tags: ${task.tags.map(tag => tag.label).join(", ")}`;
                 tags = (
@@ -82,9 +81,9 @@ const TasksList = (props) => {
                 onEditFail={props.onEditFail}/>
 
             <DeleteTask
+                id={taskId}
                 show={isShowDeleteDialog}
                 onClose={() => setDeleteDialogVisibility(false)}
-                id={taskId}
                 onDelete={props.onDelete}
                 onDeleteFail={props.onDeleteFail}/>
         </div>

@@ -1,7 +1,6 @@
 import React from 'react';
 import axios from 'axios';
 import {Redirect} from 'react-router-dom';
-import 'bootstrap/dist/css/bootstrap.min.css';
 import Alert from "react-bootstrap/Alert";
 import NewTask from "./NewTask";
 import TasksList from "./TasksList";
@@ -22,11 +21,11 @@ class Tasks extends React.Component {
         visibleTasks: [],
         tags: [],
         isShowAlert: false,
-        isShowModal: false,
         alertProps: {
             variant: null,
             content: null
         },
+        isShowModal: false,
         isRedirectToAllTasks: false
     }
 
@@ -51,6 +50,7 @@ class Tasks extends React.Component {
     }
 
     componentDidUpdate() {
+        // Reset the value of isRedirectToALlTasks after redirecting back to tasks page
         if (this.state.isRedirectToAllTasks) {
             this.setState({isRedirectToAllTasks: false});
         }
@@ -63,6 +63,7 @@ class Tasks extends React.Component {
     handleNewTaskSubmitted = (task) => {
         const newTasks = [...this.state.tasks];
         newTasks.push(task);
+
         this.setState({
             tasks: newTasks,
             isShowModal: false,

@@ -11,8 +11,10 @@ import NavigationBar from "../NavigationBar";
  * onClickNewTask = function that will be triggered when the new task button is clicked.
 */
 const TaskNavigationBar = (props) => {
+    // Display tags if any
     let tags = null;
-    if (props.tags !== undefined || props.tags !== null) {
+    const haveAnyTags = props.tags !== undefined || props.tags !== null;
+    if (haveAnyTags) {
         tags = props.tags.map(tag => {
             return (
                 <NavDropDown.Item key={tag.id} as={Link} to={`/app/tasks/tags/${tag.id}`}>
@@ -26,6 +28,7 @@ const TaskNavigationBar = (props) => {
         <NavigationBar>
             <Nav className="mr-auto">
                 <Nav.Link onClick={props.onClickNewTask}>New Task</Nav.Link>
+
                 <NavDropDown title="Filter" id="basic-nav-dropdown">
                     <NavDropDown.Item as={Link} to="/app/tasks">All Tasks</NavDropDown.Item>
                     {tags}

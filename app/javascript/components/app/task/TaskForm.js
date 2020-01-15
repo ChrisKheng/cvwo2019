@@ -22,7 +22,9 @@ axios.defaults.headers.common['X-CSRF-TOKEN'] = csrfToken;
  */
 const TaskForm = (props) => {
     //================================================ Initialisation =================================================
-    // The name of the keys here must be the same as those of the task object passed in
+    // The name of the keys here must be the same as those of the task object passed in.
+    // initialContent is used to give some initial values to the following fields to prevent them
+    // from being undefined in the component.
     const initialContent = {
         title: '',
         description: '',
@@ -34,14 +36,6 @@ const TaskForm = (props) => {
         Object.keys(props.content).forEach(key => {
             initialContent[key] = props.content[key];
         })
-
-        // Change the name of the key "name" to "label" of the tag object
-        initialContent.tags = initialContent.tags.map(tag => {
-            return {
-                id: tag.id,
-                label: tag.label
-            }
-        });
     }
 
     const [title, setTitle] = useState(initialContent.title);

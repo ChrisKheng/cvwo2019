@@ -18,6 +18,7 @@ const EditTagLabel = (props) => {
     const [newLabel, setNewLabel] = useState('');
     const [isInvalidTag, setIsInvalidTag] = useState(false);
 
+    // To pre-fill the name field of the form with the name of the tag
     useEffect(() => {
         setNewLabel(props.tag.label);
     }, [props.tag.label])
@@ -46,9 +47,9 @@ const EditTagLabel = (props) => {
         const newName = newLabel.trim();
         const length = newName.length;
         const isInvalidLength = length === 0 || length > 60;
-
         const isExist = props.tags.find(tag => tag.label === newName) !== undefined
             && newName !== props.tag.label;
+
         if (isInvalidLength || isExist) {
             setIsInvalidTag(true);
             return;
@@ -82,6 +83,7 @@ const EditTagLabel = (props) => {
                         Tag name cannot be empty, exceed 60 characters, or already exists
                     </Form.Control.Feedback>
                 </Form.Group>
+
                 <Button variant="primary" type="submit">Change</Button>
             </Form>
         </Modal>
