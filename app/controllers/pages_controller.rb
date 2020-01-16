@@ -4,5 +4,14 @@ class PagesController < ApplicationController
   end
 
   def app
+    current_uri = request.env['PATH_INFO']
+    if (current_uri.match(/^\/app\/tasks\/tags\/\d+$/))
+      id = params["tagId"].to_i
+      begin
+        Category.find(id)
+      rescue
+        raise ActionController::RoutingError, 'Not Found'
+      end  
+    end  
   end
 end

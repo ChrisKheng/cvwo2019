@@ -26,7 +26,8 @@ class Tasks extends React.Component {
             content: null
         },
         isShowModal: false,
-        isRedirectToAllTasks: false
+        isRedirectToAllTasks: false,
+        
     }
 
     /**
@@ -216,21 +217,13 @@ class Tasks extends React.Component {
             return <Redirect to='/app/tasks'/>;
         }
 
-        const tagsProps = {
-            tags: this.state.tags,
-            onNewTagCreated: this.handleNewTagCreated,
-            onNewTagFail: this.showFailAlert
-        }
-
         // To load the title and tasks of the page (filter)
         let titleTag = "";
         this.state.visibleTasks = this.state.tasks;
-
         const { match: { params } } = this.props;
         if (params.tagId !== undefined) {
             const id = parseInt(params.tagId);
             const targetTag = this.state.tags.find(tag => tag.id === id);
-
             // Filter the list of tasks according to the tag specified
             if (targetTag !== undefined) {
                 titleTag = targetTag;
@@ -242,6 +235,12 @@ class Tasks extends React.Component {
             }
         } else {
             titleTag = { id: null, label: "All Tasks" };
+        }
+
+        const tagsProps = {
+            tags: this.state.tags,
+            onNewTagCreated: this.handleNewTagCreated,
+            onNewTagFail: this.showFailAlert
         }
 
         return (
