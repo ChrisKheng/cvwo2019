@@ -3,7 +3,7 @@ import Jumbotron from "react-bootstrap/Jumbotron";
 import Button from "react-bootstrap/Button";
 
 /**
- * Represents the title jumbotron in the home page.
+ * The title in the home page.
  */
 const Title = () => {
     return (

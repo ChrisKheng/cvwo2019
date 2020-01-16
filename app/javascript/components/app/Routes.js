@@ -3,7 +3,7 @@ import {Route} from 'react-router-dom';
 import Tasks from "./task/Tasks";
 
 /**
- * Encapsulates the possible routes in the application page (for React-Router's use).
+ * Encapsulates all the possible routes in the application page (for React-Router's use).
  */
 const Routes = () => {
     return (

@@ -4,12 +4,12 @@ import Button from "react-bootstrap/Button";
 import Container from "react-bootstrap/Container";
 
 /**
- * Represents a confirmation dialog.
+ * A confirmation modal dialog.
  * 
- * ConfirmationDialog JSX attributes
- * show = toggle modal visibility (must be provided, either true or false).
- * onClose = function that will be triggered when the No button of the dialog is clicked.
- * onConfirm = function that will be triggered when the Yes button of the dialog is clicked.
+ * props properties
+ * show = A boolean which toggles the dialog's visibility.
+ * onClose = A function that is triggered when the No button of the dialog is clicked.
+ * onConfirm = function that is triggered when the Yes button of the dialog is clicked.
  */
 const ConfirmationDialog = (props) => {
     return (

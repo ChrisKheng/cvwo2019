@@ -2,7 +2,7 @@ import React from 'react';
 import Navbar from "react-bootstrap/Navbar";
 
 /**
- * Represents the navigation bar of the application.
+ * The navigation bar of the application.
  */
 const NavigationBar = (props) => {
     return (

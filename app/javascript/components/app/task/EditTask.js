@@ -35,6 +35,7 @@ const EditTask = (props) => {
     return (
         <Modal show={props.show} onClose={props.onClose}>
             <h1>Edit Task</h1>
+
             <TaskForm
                 content={{ ...props.task }}
                 tagsProps={props.tagsProps}

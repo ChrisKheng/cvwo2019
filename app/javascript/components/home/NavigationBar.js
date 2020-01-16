@@ -1,10 +1,10 @@
 import React from "react";
+import {Link} from "react-router-dom";
 import Navbar from "react-bootstrap/Navbar";
 import Nav from "react-bootstrap/Nav";
-import {Link} from "react-router-dom";
 
 /**
- * Represents the navigation bar of the product website.
+ * The navigation bar of the product website.
  */
 const NavigationBar = () => {
     return (
