@@ -71,6 +71,7 @@ const TaskForm = (props) => {
         const isExceedLength = newItem.label.length > 60;
         if (isDuplicate || isExceedLength) {
             selections.splice(length - 1, 1);
+            setSelectedTags(selections);
             setIsInvalidTag(true);
             return;
         }
