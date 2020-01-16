@@ -76,7 +76,7 @@ const TasksList = (props) => {
                 task={task}
                 tagsProps = {props.tagsProps}
                 show={isShowEditDialog}
-                onHide={() => setEditDialogVisibility(false)}
+                onClose={() => setEditDialogVisibility(false)}
                 onEdit={props.onEdit}
                 onEditFail={props.onEditFail}/>
 

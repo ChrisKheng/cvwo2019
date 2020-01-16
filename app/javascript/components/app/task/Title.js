@@ -42,7 +42,7 @@ const Title = (props) => {
                 tag={props.tag}
                 tags={props.tags}
                 show={isShowEditForm}
-                onHide={() => setIsShowEditForm(false)}
+                onClose={() => setIsShowEditForm(false)}
                 onEdit={props.onEditTag}
                 onEditFail={props.onEditTagFail} />
 

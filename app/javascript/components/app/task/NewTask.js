@@ -9,7 +9,7 @@ import Modal from "../../utilities/Modal";
  * props properties 
  * tagsProps: An object consisting properties for operations related to tags, see Tasks components documentation.
  * show: A boolean which toggles the visibility of the dialog.
- * onHide: A function which is triggered when the close button of the dialog is clicked.
+ * onClose: A function which is triggered when the close button of the dialog is clicked.
  * onNewTaskSuccess: A function which is triggered when a new task is created successfully.
  * onNewTaskFail: A function which is triggered when creating a new task fails.
  */
@@ -31,7 +31,7 @@ class NewTask extends React.Component {
 
     render() {
         return (
-            <Modal show={this.props.show} onHide={this.props.onHide}>
+            <Modal show={this.props.show} onClose={this.props.onClose}>
                 <h1>New Task</h1>
                 <TaskForm
                     onSubmit={this.handleSubmit}

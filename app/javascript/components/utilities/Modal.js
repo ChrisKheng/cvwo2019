@@ -7,13 +7,13 @@ import { faTimes } from "@fortawesome/free-solid-svg-icons/faTimes";
  * 
  * Modal JSX attribues
  * show = toggle modal visibility (must be provided, either true or false).
- * onHide = function that will be triggered when the close button of modal is clicked.
+ * onClose = function that will be triggered when the close button of modal is clicked.
  * closeButton = toggle button visibility (by default true).
  * size = change the size of the modal (available options: sm).
  */
 const Modal = (props) => {
     let closeButton = (
-        <FontAwesomeIcon icon={faTimes} onClick={props.onHide} size="lg" />
+        <FontAwesomeIcon icon={faTimes} onClick={props.onClose} size="lg" />
     );
 
     let className = "custom-modal".concat(" ", props.className);

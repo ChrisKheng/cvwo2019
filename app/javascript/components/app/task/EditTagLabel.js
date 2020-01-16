@@ -11,7 +11,7 @@ import Modal from '../../utilities/Modal';
  * tag: The tag object to be edited.
  * tags: An array of tag objects which are already created by the user.
  * show: A boolean which shows the edit tag dialog if set to true.
- * onHide: A function which is triggered when the close button of the dialog is clicked.
+ * onClose: A function which is triggered when the close button of the dialog is clicked.
  * onEdit: A function which is triggered when the tag is successfully edited, i.e. a success message is sent by the
  *         server.
  * onEditFail: A function which is triggered when editing the tag fails, e.g. due to internet connection.
@@ -32,17 +32,17 @@ const EditTagLabel = (props) => {
     }
 
     // Handles the situation when the modal's close button is clicked
-    const handleOnHide = () => {
+    const handleOnClose = () => {
         // Set the tag name field's value back to the original tag name 
         // since no edit action is actually performed
         setNewLabel(props.tag.label);
-        handleOnClose();
+        handleOnHide();
     }
 
     // Handles the situation when the modal disappears
-    const handleOnClose = () => {
+    const handleOnHide = () => {
         setIsInvalidTag(false);
-        props.onHide();
+        props.onClose();
     }
 
     // Handles the situation when the submit button of the dialog is clicked.
@@ -78,12 +78,12 @@ const EditTagLabel = (props) => {
             setNewLabel(props.tag.label);
             props.onEditFail(error.message);
         }).finally(() => {
-            handleOnClose();
+            handleOnHide();
         })
     }
 
     return (
-        <Modal show={props.show} onHide={handleOnHide} size="sm">
+        <Modal show={props.show} onClose={handleOnClose} size="sm">
             <h4>Edit Tag</h4>
             <Form onSubmit={handleSubmit}>
                 <Form.Group>

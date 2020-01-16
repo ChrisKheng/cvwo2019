@@ -278,7 +278,7 @@ class Tasks extends React.Component {
                 <NewTask
                     tagsProps={tagsProps}
                     show={this.state.isShowModal}
-                    onHide={this.setModalVisibility.bind(this, false)}
+                    onClose={this.setModalVisibility.bind(this, false)}
                     onNewTaskSuccess={this.handleNewTaskSubmitted.bind(this)}
                     onNewTaskFail={this.handleNewTaskFail.bind(this)}/>
             </React.Fragment>

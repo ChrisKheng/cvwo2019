@@ -13,7 +13,7 @@ import Modal from "../../utilities/Modal";
  * onEdit: A function that is triggered when a task is edited successfully, i.e. a success message is sent back
  *         by the server.
  * onEditFail: A function that is triggered when editing the task fails.
- * onHide: A function that is triggered when the close button of the dialog is clicked.
+ * onClose: A function that is triggered when the close button of the dialog is clicked.
  */
 const EditTask = (props) => {
     /**
@@ -28,12 +28,12 @@ const EditTask = (props) => {
         }).catch(error => {
             props.onEditFail(error.message);
         }).finally(() => {
-            props.onHide();
+            props.onClose();
         })
     };
 
     return (
-        <Modal show={props.show} onHide={props.onHide}>
+        <Modal show={props.show} onClose={props.onClose}>
             <h1>Edit Task</h1>
             <TaskForm
                 content={{ ...props.task }}
