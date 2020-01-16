@@ -1,6 +1,6 @@
 import React from 'react';
 import axios from 'axios';
-import {Redirect} from 'react-router-dom';
+import { Redirect } from 'react-router-dom';
 import Alert from "react-bootstrap/Alert";
 import NewTask from "./NewTask";
 import TasksList from "./TasksList";
@@ -27,7 +27,7 @@ class Tasks extends React.Component {
         },
         isShowModal: false,
         isRedirectToAllTasks: false,
-        
+
     }
 
     /**
@@ -37,14 +37,14 @@ class Tasks extends React.Component {
         // AJAX call
         axios.get("/tasks")
             .then(result => {
-               this.setState({ tasks: [...result.data] });
+                this.setState({ tasks: [...result.data] });
             }).catch(error => {
                 this.showFailAlert(error.message);
             })
 
         axios.get("/categories")
             .then(result => {
-               this.setState({ tags: result.data })
+                this.setState({ tags: result.data })
             }).catch(error => {
                 this.showFailAlert(error.message);
             })
@@ -53,7 +53,7 @@ class Tasks extends React.Component {
     componentDidUpdate() {
         // Reset the value of isRedirectToALlTasks after redirecting back to tasks page
         if (this.state.isRedirectToAllTasks) {
-            this.setState({isRedirectToAllTasks: false});
+            this.setState({ isRedirectToAllTasks: false });
         }
     }
 
@@ -173,7 +173,7 @@ class Tasks extends React.Component {
 
     handleTagDeleted = (deletedTag) => {
         // Remove the deleted tag from tags array
-        const tagsArray = [...this.state.tags];        
+        const tagsArray = [...this.state.tags];
         const index = tagsArray.findIndex(tag => tag.id === deletedTag.id);
         tagsArray.splice(index, 1);
 
@@ -211,33 +211,41 @@ class Tasks extends React.Component {
         this.setState({ isShowModal: visibility });
     }
 
-    render() {
-        // Handle redirection
-        if (this.state.isRedirectToAllTasks) {
-            return <Redirect to='/app/tasks'/>;
-        }
-
-        // To load the title and tasks of the page (filter)
-        let titleTag = "";
+    getTitleTag = () => {
+        let titleTag = null;
         this.state.visibleTasks = this.state.tasks;
+
         const { match: { params } } = this.props;
         if (params.tagId !== undefined) {
             const id = parseInt(params.tagId);
-            const targetTag = this.state.tags.find(tag => tag.id === id);
+            titleTag = this.state.tags.find(tag => tag.id === id);
+
             // Filter the list of tasks according to the tag specified
-            if (targetTag !== undefined) {
-                titleTag = targetTag;
+            if (titleTag !== undefined) {
                 this.state.visibleTasks = this.state.tasks.filter(task => {
-                    return task.tags.find(tag => tag.id === targetTag.id) !== undefined;
+                    return task.tags.find(tag => tag.id === titleTag.id) !== undefined;
                 });
-            } else {
-                return <PageNotFound />
             }
         } else {
             titleTag = { id: null, label: "All Tasks" };
         }
 
-        const tagsProps = {
+        return titleTag;
+    }
+
+    render() {
+        // Handle redirection
+        if (this.state.isRedirectToAllTasks) {
+            return <Redirect to='/app/tasks' />;
+        }
+
+        // To load the title and tasks of the page (filter)
+        let titleTag = this.getTitleTag();
+        if (titleTag == null) {
+            return <div/>
+        }
+
+       const tagsProps = {
             tags: this.state.tags,
             onNewTagCreated: this.handleNewTagCreated,
             onNewTagFail: this.showFailAlert
@@ -258,13 +266,13 @@ class Tasks extends React.Component {
                     {this.state.alertProps.content}
                 </Alert>
 
-                <Title 
+                <Title
                     tag={titleTag}
                     tags={this.state.tags}
                     onEditTag={this.handleTagEdited}
                     onEditTagFail={this.showFailAlert}
                     onDeleteTag={this.handleTagDeleted}
-                    onDeleteTagFail={this.showFailAlert}/>
+                    onDeleteTagFail={this.showFailAlert} />
 
                 <TasksList
                     tasks={this.state.visibleTasks}
@@ -272,14 +280,14 @@ class Tasks extends React.Component {
                     onEdit={this.handleTaskEdited}
                     onEditFail={this.showFailAlert}
                     onDelete={this.handleTaskDeleted}
-                    onDeleteFail={this.showFailAlert}/>
+                    onDeleteFail={this.showFailAlert} />
 
                 <NewTask
                     tagsProps={tagsProps}
                     show={this.state.isShowModal}
                     onClose={this.setModalVisibility.bind(this, false)}
                     onNewTaskSuccess={this.handleNewTaskSubmitted.bind(this)}
-                    onNewTaskFail={this.handleNewTaskFail.bind(this)}/>
+                    onNewTaskFail={this.handleNewTaskFail.bind(this)} />
             </React.Fragment>
         )
     }
