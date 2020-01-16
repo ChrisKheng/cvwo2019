@@ -242,10 +242,10 @@ class Tasks extends React.Component {
         // To load the title and tasks of the page (filter)
         let titleTag = this.getTitleTag();
         if (titleTag == null) {
-            return <div/>
+            return <div />
         }
 
-       const tagsProps = {
+        const tagsProps = {
             tags: this.state.tags,
             onNewTagCreated: this.handleNewTagCreated,
             onNewTagFail: this.showFailAlert

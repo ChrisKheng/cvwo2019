@@ -42,7 +42,7 @@ const TaskForm = (props) => {
     const [title, setTitle] = useState(initialContent.title);
     const [description, setDescription] = useState(initialContent.description);
     const [selectedTags, setSelectedTags] = useState(initialContent.tags);
-    const [isInvalidTag, setIsInvalidTag] = useState(false);
+    const [isTagInvalid, setIsTagInvalid] = useState(false);
 
     //============================================== Handle Input Change ==============================================
     const handleTitleChanged = (event) => {
@@ -55,7 +55,7 @@ const TaskForm = (props) => {
 
     // selections is the user's selected tag objects sent by the react-bootstrap-typeahead component.
     const handleTagsChanged = (selections) => {
-        setIsInvalidTag(false);
+        setIsTagInvalid(false);
 
         let length = selections.length;
 
@@ -72,7 +72,7 @@ const TaskForm = (props) => {
         if (isDuplicate || isExceedLength) {
             selections.splice(length - 1, 1);
             setSelectedTags(selections);
-            setIsInvalidTag(true);
+            setIsTagInvalid(true);
             return;
         }
 
@@ -125,6 +125,7 @@ const TaskForm = (props) => {
         // Resets validation state.
         setIsTitleInvalid(false);
         setIsDescriptionInvalid(false);
+        setIsTagInvalid(false);
 
         // Checks if the task's title is empty.
         if (task.title.length === 0) {
@@ -147,7 +148,6 @@ const TaskForm = (props) => {
                 <Form.Label>Title</Form.Label>
                 <Form.Control
                     type="text"
-                    placeholder="Title"
                     value={title}
                     onChange={handleTitleChanged}
                     isInvalid={isTitleInvalid} />
@@ -161,7 +161,6 @@ const TaskForm = (props) => {
                 <Form.Control
                     as="textarea"
                     rows="4"
-                    placeholder="Description"
                     value={description}
                     onChange={handleDescriptionChanged}
                     isInvalid={isDescriptionInvalid} />
@@ -171,11 +170,11 @@ const TaskForm = (props) => {
             </FormGroup>
 
             <FormGroup>
-                <Form.Label>Tag</Form.Label>
+                <Form.Label>Tags</Form.Label>
                 <Typeahead
                     clearButton
                     maxHeight='110px'
-                    isInvalid={isInvalidTag}
+                    isInvalid={isTagInvalid}
                     multiple={true}
                     options={props.tagsProps.tags}
                     allowNew
@@ -185,7 +184,7 @@ const TaskForm = (props) => {
                 <Form.Control.Feedback
                     type="invalid"
                     className="custom-invalid-feedback"
-                    style={isInvalidTag ? { display: "block" } : {}}>
+                    style={isTagInvalid ? { display: "block" } : {}}>
                     Cannot create tag that already exists or exceeds 60 characters
                 </Form.Control.Feedback>
             </FormGroup>
