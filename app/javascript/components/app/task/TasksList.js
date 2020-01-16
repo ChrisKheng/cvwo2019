@@ -5,23 +5,26 @@ import EditTask from "./EditTask";
 import DeleteTask from './DeleteTask';
 
 /**
- * Represents the list of displayed tasks.
+ * A list of displayed tasks.
  * 
- * TasksList JSX attributes
- * tasks: an array of tasks that will be displayed in the tasklist.
- * onEdit: function that will be triggered when a task is edited successfully.
- * onEditFail: function that will be triggered when editing a task fails.
- * onDelete: function that will be triggered when a task is deleted successfully.
- * onDeleteFail: function that will be triggered when deleting a task fails.
+ * props properties
+ * tasks: An array of tasks that will be displayed in the tasklist.
+ * tagsProps: An object consisting utilities for operations related to tags, see documentation in Tasks component.
+ * onEdit: A function that is triggered when a task is edited successfully.
+ * onEditFail: A function that is triggered when editing a task fails.
+ * onDelete: A function that is triggered when a task is deleted successfully.
+ * onDeleteFail: A function that is triggered when deleting a task fails.
  */
 const TasksList = (props) => {
+    // task and taskId are state objects used to dynamically set the task object and task id passed to
+    // the EditTask and deleteTask dialog respectively.
     const [isShowEditDialog, setEditDialogVisibility] = useState(false);
     const [task, setTask] = useState(null);
     const [isShowDeleteDialog, setDeleteDialogVisibility] = useState(false);
     const [taskId, setTaskId] = useState(null);
 
     /**
-     * Fires up the edit task form modal.
+     * Passes the respective task object to the EditTaskDialog and makes the dialog visible. 
      */
     const onEditClicked = (task) => {
         setTask(task);
@@ -29,7 +32,7 @@ const TasksList = (props) => {
     };
 
     /**
-     * Fires up the delete task confirmation dialog modal.
+     * Passes the respective task id to the DeleteTaskDialog and makes the dialog visible. 
      */
     const onDeleteClicked = (id) => {
         setTaskId(id);
@@ -37,13 +40,15 @@ const TasksList = (props) => {
     };
 
 
-    // Display the tasks if any
+    // Display tasks if any
     let cards = null;
     if (props.tasks !== undefined) {
         cards = props.tasks.map((task) => {
-            // Display the tags if any
+            // Display the tags if any by joining the tags' name with comma
             let tags = null;
-            if (task.tags.length !== 0) {
+            const haveAnyTag = task.tags.length !== 0;
+
+            if (haveAnyTag) {
                 const categories = `Tags: ${task.tags.map(tag => tag.label).join(", ")}`;
                 tags = (
                     <Card.Footer className="text-muted">

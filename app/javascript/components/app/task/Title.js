@@ -5,18 +5,27 @@ import EditTagLabel from './EditTagLabel';
 import DeleteTag from './DeleteTag';
 
 /**
- * Title JSX attribues
+ * A jumbotron which displays the title of the master tasks page and filter tasks page as well as some tag actions.
+ * Master tasks page refers to the page which displays all the tasks.
+ * Filter tasks page refers to the page which displays tasks that belong to a tag.
  * 
- * tag: must be provided, an object
- * tags:
- * onEditTag
+ * props properties
+ * tag: A tag object used to display the title of the page. For master tasks page, the id of the tag object needs to
+ *      be null and the label of the tag object is the title of the page.
+ * tags: An array of tags which are created by the user.
+ * onEditTag: A function which is triggered when a tag is edited successfully.
+ * onEditTagFail: A function which is triggered when editing a tag fails.
+ * onDeleteTag: A function which is triggered when a tag is deleted successfully.
+ * onDeleteTagFail: A function which is triggered when deleting a tag fails.
  */
 const Title = (props) => {
     const [isShowEditForm, setIsShowEditForm] = useState(false);
     const [isShowDeleteDialog, setIsShowDeleteDialog] = useState(false);
 
+    // links refers to the edit tag link and delete tag link
     let links = null;
 
+    // Displays links if the page is filter tasks page.
     if (props.tag.id !== null) {
         links = (
             <Nav className="tag-nav">

@@ -5,10 +5,11 @@ import NavDropDown from "react-bootstrap/NavDropdown";
 import NavigationBar from "../NavigationBar";
 
 /**
- * Represents the navigation bar above the tasks page.
+ * The navigation bar above the tasks page.
  * 
- * TaskNavigationBar JSX attributes
- * onClickNewTask = function that will be triggered when the new task button is clicked.
+ * props properties
+ * tags: An array of tags which are created by the user.
+ * onClickNewTask = A function that is triggered when the new task button is clicked.
 */
 const TaskNavigationBar = (props) => {
     // Display tags if any

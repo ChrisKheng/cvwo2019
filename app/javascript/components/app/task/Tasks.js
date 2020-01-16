@@ -6,16 +6,27 @@ import NewTask from "./NewTask";
 import TasksList from "./TasksList";
 import TaskNavigationBar from "./TaskNavigationBar";
 import Title from './Title';
-import PageNotFound from '../../utilities/PageNotFound';
 
 /**
- * Represents the tasks page where all the tasks are displayed.
+ * The page where all the tasks are displayed.
  * 
- * Tasks JSX attributes
- * tasks: an array of tasks to be displayed in the tasks page.
+ * Master tasks page refers to the page which displays all the tasks.
+ * task object: consists of these keys: id, title, description, created_at, updated_at, and tags properties.
+ *              tags is the tags that are associated to the task.
+ * tag object: consists of these keys: id, label, created_at, updated_at.
+ * tagsProps: An object consisting utilities for operations related to tags.
+ *            It consists of these keys: tags, onNewTagCreated, onNewTagFail.
  */
 class Tasks extends React.Component {
-    // content: message to be displayed in the alert
+    /**
+     * tasks: An array of tasks created by the user.
+     * visibileTasks: An array of tasks to be displayed in the page.
+     * tags: An array of tags created by the user.
+     * alertProps: An object used for displaying alert message.
+     * variant: Type of the alert message. Refers to React-Bootstrap alert API.
+     * content: Message to be displayed in the alert message.
+     * isRedirectToAllTasks: A boolean which determines whether to redirect to the master tasks page all the tasks.
+     */ 
     state = {
         tasks: [],
         visibleTasks: [],
@@ -31,10 +42,9 @@ class Tasks extends React.Component {
     }
 
     /**
-     * Fetch all the tasks to be displayed.
+     * Fetch all the tasks and tags created by the user.
      */
     componentDidMount() {
-        // AJAX call
         axios.get("/tasks")
             .then(result => {
                 this.setState({ tasks: [...result.data] });
@@ -51,7 +61,7 @@ class Tasks extends React.Component {
     }
 
     componentDidUpdate() {
-        // Reset the value of isRedirectToALlTasks after redirecting back to tasks page
+        // Resets the value of isRedirectToALlTasks to false after redirecting back to master tasks page 
         if (this.state.isRedirectToAllTasks) {
             this.setState({ isRedirectToAllTasks: false });
         }
@@ -141,19 +151,25 @@ class Tasks extends React.Component {
     }
 
     //================================================== Tags =========================================================
+    /**
+     * Adds the newly created tag into the tag list
+     */
     handleNewTagCreated = (tag) => {
         const array = [...this.state.tags];
         array.push(tag);
         this.setState({ tags: array });
     }
 
+    /**
+     * Updates the tags list and respective task objects with the edited tag and shows an alert message.
+     */
     handleTagEdited = (editedTag) => {
-        // Update tag in tags array
+        // Update the edited tag in tags array
         const tagsArray = [...this.state.tags];
         const index = tagsArray.findIndex(tag => tag.id === editedTag.id);
         tagsArray.splice(index, 1, editedTag);
 
-        // Update the name of edited tag in its tasks 
+        // Update the name of the edited tag in its respective tasks
         const visibleTasksArray = [...this.state.visibleTasks];
         visibleTasksArray.forEach(task => {
             const oldTag = task.tags.find(tag => tag.id === editedTag.id);
@@ -171,13 +187,17 @@ class Tasks extends React.Component {
         });
     }
 
+    /**
+     * Removes the deleted tag from the tags list and its respective tasks,
+     * then redirect the page to the master tasks page and finally shows an alert message.
+     */
     handleTagDeleted = (deletedTag) => {
-        // Remove the deleted tag from tags array
+        // Removes the deleted tag from tags array
         const tagsArray = [...this.state.tags];
         const index = tagsArray.findIndex(tag => tag.id === deletedTag.id);
         tagsArray.splice(index, 1);
 
-        // Remove the deleted tag from its tasks
+        // Remove the deleted tag from its respective tasks
         const visibleTasksArray = [...this.state.visibleTasks];
         visibleTasksArray.forEach(task => {
             const index = task.tags.findIndex(tag => tag.id === deletedTag.id);
@@ -198,7 +218,7 @@ class Tasks extends React.Component {
 
     //================================================= Others ========================================================
     /**
-     * Closes the alert shown (can be used for both success and fail alert).
+     * Closes the alert shown.
      */
     closeAlert = () => {
         this.setState({ isShowAlert: false });
@@ -211,17 +231,26 @@ class Tasks extends React.Component {
         this.setState({ isShowModal: visibility });
     }
 
+    /**
+     * Returns the respective tag object for the use of the Title component.
+     * If the page is master tasks page, return { id: null, label: "All Tasks" } as the tag object.
+     */
     getTitleTag = () => {
-        let titleTag = null;
+        let titleTag = undefined;
         this.state.visibleTasks = this.state.tasks;
 
         const { match: { params } } = this.props;
-        if (params.tagId !== undefined) {
+        const isFilteredTasksPage = params.tagId !== undefined;
+
+        if (isFilteredTasksPage) {
             const id = parseInt(params.tagId);
             titleTag = this.state.tags.find(tag => tag.id === id);
 
-            // Filter the list of tasks according to the tag specified
-            if (titleTag !== undefined) {
+            // Sets visibleTasks to the array of tasks that belong to the tag specfied.
+            // isFinishedLoading: true if all the tasks and tags have been fetched from the server succeffully.
+            // titleTag will be undefined if the tasks and tags have not been fetched from the server.
+            const isFinishedLoading = titleTag !== undefined;
+            if (isFinishedLoading) {
                 this.state.visibleTasks = this.state.tasks.filter(task => {
                     return task.tags.find(tag => tag.id === titleTag.id) !== undefined;
                 });
@@ -234,14 +263,15 @@ class Tasks extends React.Component {
     }
 
     render() {
-        // Handle redirection
+        // Handle redirection to master tasks page.
         if (this.state.isRedirectToAllTasks) {
             return <Redirect to='/app/tasks' />;
         }
 
-        // To load the title and tasks of the page (filter)
+        // To load the title and tasks of the page according to the tag specified if any.
         let titleTag = this.getTitleTag();
-        if (titleTag == null) {
+        const isFinishedLoading = titleTag !== undefined;
+        if (!isFinishedLoading) {
             return <div />
         }
 

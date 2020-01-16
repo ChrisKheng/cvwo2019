@@ -15,7 +15,7 @@ axios.defaults.headers.common['X-CSRF-TOKEN'] = csrfToken;
  * 
  * props properties
  * content: An optional task object that is passed to prefill the task form.
- * tagsProps: An object consisting properties for operations related to tags, see Tasks components documentation.
+ * tagsProps: An object consisting utilities for operations related to tags, see documentation in Task component.
  * onSubmit: A function that is triggered when the submit button of the form is clicked.
  * onNewTagCreated: A function that is triggered when a new tag is created.
  * onNewTagFail: A function that is triggered when creating a new tag fails.
@@ -104,7 +104,7 @@ const TaskForm = (props) => {
     const [isDescriptionInvalid, setIsDescriptionInvalid] = useState(false);
 
     /**
-     * Triggers onSubmit task function which is passed to the TaskForm.
+     * Triggers the onSubmit task function which is passed to TaskForm as props.
      */
     const handleSubmit = (event) => {
         event.preventDefault();
@@ -119,6 +119,9 @@ const TaskForm = (props) => {
         }
     };
 
+    /**
+     * Validates the content of task form by checking the task object passed in.
+     */
     const validateForm = (task) => {
         let errorCount = 0;
 

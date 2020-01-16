@@ -8,7 +8,7 @@ import Modal from "../../utilities/Modal";
  * 
  * props properties 
  * task: A task object to prefill the fields of the edit task form.
- * tagsProps: An object consisting properties for operations related to tags, see Tasks components documentation.
+ * tagsProps: An object consisting utilities for operations related to tags, see documentation in Tasks component.
  * show: A boolean which toggles the visibility of the dialog.
  * onEdit: A function that is triggered when a task is edited successfully, i.e. a success message is sent back
  *         by the server.

@@ -7,7 +7,7 @@ import Modal from "../../utilities/Modal";
  * A form dialog for creating a new task.
  * 
  * props properties 
- * tagsProps: An object consisting properties for operations related to tags, see Tasks components documentation.
+ * tagsProps: An object consisting utilities for operations related to tags, see documentation in Task component.
  * show: A boolean which toggles the visibility of the dialog.
  * onClose: A function which is triggered when the close button of the dialog is clicked.
  * onNewTaskSuccess: A function which is triggered when a new task is created successfully.
