@@ -9,3 +9,4 @@ services:
 script:
   - bundle exec rails db:create RAILS_ENV=test
   - bundle exec rails db:migrate
+  - bundle exec rails test
