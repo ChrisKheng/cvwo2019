@@ -1,20 +1,23 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import Modal from '../../utilities/Modal';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
+import Modal from '../../utilities/Modal';
 
 /**
- * EditCategoryName JSX attribute
+ * A modal dialog for editing the name of a tag.
  * 
- * show
- * onHide
- * onEdit
- * onEditFail
- * tag 
- * tags
+ * props properties:
+ * tag: The tag object to be edited.
+ * tags: An array of tag objects which are already created by the user.
+ * show: A boolean which shows the edit tag dialog if set to true.
+ * onHide: A function which is triggered when the close button of the dialog is clicked.
+ * onEdit: A function which is triggered when the tag is successfully edited, i.e. a success message is sent by the
+ *         server.
+ * onEditFail: A function which is triggered when editing the tag fails, e.g. due to internet connection.
  */
 const EditTagLabel = (props) => {
+    // newLabel: A string state object which is used to track the name typed by the user in the dialog.
     const [newLabel, setNewLabel] = useState('');
     const [isInvalidTag, setIsInvalidTag] = useState(false);
 
@@ -23,11 +26,12 @@ const EditTagLabel = (props) => {
         setNewLabel(props.tag.label);
     }, [props.tag.label])
 
+    // Handles change in input
     const handleLabelChange = (event) => {
         setNewLabel(event.target.value);
     }
 
-    // Handle when the modal's close button is clicked
+    // Handles the situation when the modal's close button is clicked
     const handleOnHide = () => {
         // Set the tag name field's value back to the original tag name 
         // since no edit action is actually performed
@@ -35,15 +39,19 @@ const EditTagLabel = (props) => {
         handleOnClose();
     }
 
-    // Handle when the modal disappears
+    // Handles the situation when the modal disappears
     const handleOnClose = () => {
         setIsInvalidTag(false);
         props.onHide();
     }
 
+    // Handles the situation when the submit button of the dialog is clicked.
     const handleSubmit = (event) => {
         event.preventDefault();
 
+        // Perform validation
+        // isExist: True if the tagname of the edited tag already exists, i.e. same with the 
+        //          name of other tags. 
         const newName = newLabel.trim();
         const length = newName.length;
         const isInvalidLength = length === 0 || length > 60;
@@ -55,14 +63,18 @@ const EditTagLabel = (props) => {
             return;
         }
 
+        // Send a PUT request to the server with the edited tag object as a category object.
+        // After that, performs follow-up action accordingly and closes the dialog.
         axios.put(`/categories/${props.tag.id}`, {
             category: {
                 label: newName
             }
         }).then(result => {
+            // Updates the name field of the dialog with the name of the tag sent back by the server.
             setNewLabel(result.data.label);
             props.onEdit(result.data);
         }).catch(error => {
+            // Set the name field of the dialog back to the original name of the tag.
             setNewLabel(props.tag.label);
             props.onEditFail(error.message);
         }).finally(() => {

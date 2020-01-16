@@ -3,15 +3,20 @@ import axios from 'axios';
 import ConfirmationDialog from '../../utilities/ConfirmationDialog';
 
 /**
- * DeleteTag JSX attributes
+ * A confirmation dialog for deleting a tag.
  * 
- * tag
- * show
- * onClose
- * onDelete
- * onDeleteFail
+ * props properties 
+ * tag: The tag object which may be deleted. 
+ * show: A boolean which shows the delete tag dialog if set to true.
+ * onClose: A function which is triggered when the No button of the dialog is clicked.
+ * onDelete: A function which is triggered when the Yes button of the dialog is clicked.
+ * onDeleteFail: A  function which is triggered when deleting the tag fails.
  */
 const DeleteTag = (props) => {
+    /**
+     * Sends a DELETE request to the app server to delete the given tag.
+     * After that, performs follow up actions accordingly and closes the delete dialog.
+     */
     const handleDeleteTag = () => {
         axios.delete(`/categories/${props.tag.id}`)
         .then(result => {

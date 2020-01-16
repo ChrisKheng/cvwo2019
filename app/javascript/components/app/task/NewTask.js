@@ -1,17 +1,17 @@
 import React from 'react';
 import axios from "axios";
-import 'bootstrap/dist/css/bootstrap.min.css';
 import TaskForm from "./TaskForm";
 import Modal from "../../utilities/Modal";
 
 /**
- * Represents the new task form modal dialog.
+ * A form dialog for creating a new task.
  * 
- * NewTask JSX attributes
- * show: toggle the visibility of the new task form modal.
- * onHide: function that will trigger when the new task form modal's close button is closed.
- * onNewTaskSuccess: function that will be triggered when a new task is created successfully.
- * onNewTaskFail: function that will be triggered when creating a new task fails.
+ * props properties 
+ * tagsProps: An object consisting properties for operations related to tags, see Tasks components documentation.
+ * show: A boolean which toggles the visibility of the dialog.
+ * onHide: A function which is triggered when the close button of the dialog is clicked.
+ * onNewTaskSuccess: A function which is triggered when a new task is created successfully.
+ * onNewTaskFail: A function which is triggered when creating a new task fails.
  */
 class NewTask extends React.Component {
     /**

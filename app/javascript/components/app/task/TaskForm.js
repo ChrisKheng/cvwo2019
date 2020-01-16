@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import axios from 'axios';
 import Form from "react-bootstrap/Form";
 import FormGroup from "react-bootstrap/FormGroup";
@@ -11,14 +11,14 @@ const csrfToken = document.querySelector('[name=csrf-token]').content;
 axios.defaults.headers.common['X-CSRF-TOKEN'] = csrfToken;
 
 /**
- * Represents the task form.
+ * A form for creating or editing a task.
  * 
- * TaskForm JSX attribute (API)
- * content: an optional task object that is passed to prefill the task form. The task object contains
- *          title and description.
- * onSubmit: function that will be triggered when the submit button is clicked.
- * onNewTagCreated:
- * onNewTagFail:
+ * props properties
+ * content: An optional task object that is passed to prefill the task form.
+ * tagsProps: An object consisting properties for operations related to tags, see Tasks components documentation.
+ * onSubmit: A function that is triggered when the submit button of the form is clicked.
+ * onNewTagCreated: A function that is triggered when a new tag is created.
+ * onNewTagFail: A function that is triggered when creating a new tag fails.
  */
 const TaskForm = (props) => {
     //================================================ Initialisation =================================================
@@ -38,6 +38,7 @@ const TaskForm = (props) => {
         })
     }
 
+    // title, description, selectedTags are state objects used to track the values of the input fields of the form.
     const [title, setTitle] = useState(initialContent.title);
     const [description, setDescription] = useState(initialContent.description);
     const [selectedTags, setSelectedTags] = useState(initialContent.tags);
@@ -52,42 +53,47 @@ const TaskForm = (props) => {
         setDescription(event.target.value);
     };
 
+    // selections is the user's selected tag objects sent by the react-bootstrap-typeahead component.
     const handleTagsChanged = (selections) => {
         setIsInvalidTag(false);
 
         let length = selections.length;
 
-        // If length is 0 then don't have to perform any operations after this if statement
+        // If length is 0, operations after this if statement don't have to be performed.
         if (length === 0) {
             setSelectedTags([]);
             return;
         }
 
-        // Check the validity of the added tag
+        // Checks the validity of newItem, which is the added tag.
         const newItem = selections[length - 1];
         const isDuplicate = selections.filter(tag => tag.label === newItem.label).length > 1;
         const isExceedLength = newItem.label.length > 60;
         if (isDuplicate || isExceedLength) {
-            selections.splice(length - 1);
+            selections.splice(length - 1, 1);
             setIsInvalidTag(true);
             return;
         }
 
-        // Create the added tag on server side if the added tag is a new tag that hasn't existed
+        // If the added tag is a tag that hasn't existed, send a POST request to the server with the new tag object
+        // to create the tag and perform necessary follow-up actions.
         const isNewTag = props.tagsProps.tags.find(tag => tag.label === newItem.label) === undefined;
         if (isNewTag) {
             axios.post('/categories', {
                 category: { label: newItem.label }
             }).then((result) => {
+                // Update the added tag object with the tag object sent by the server
+                // in user selections for both the typeahead component and the internal state.
                 selections.splice(length - 1, 1, result.data);
                 setSelectedTags(selections);
                 props.tagsProps.onNewTagCreated(result.data);
             }).catch(error => {
+                // Remove the added tag object from the user selections for the typeahead component.
                 selections.splice(length - 1, 1);
                 props.tagsProps.onNewTagFail(error.message);
             })
         } else {
-            // The added tag is a tag that already exists
+            // The added tag is a tag that already exists.
             setSelectedTags(selections);
         }
     }
