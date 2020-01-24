@@ -19,11 +19,10 @@ const DeleteTag = (props) => {
      */
     const handleDeleteTag = () => {
         axios.delete(`/categories/${props.tag.id}`)
-        .then(result => {
+        .then(() => {
             props.onDelete(props.tag);
         }).catch(error => {
             props.onDeleteFail(error.message);
-        }).finally(() => {
             props.onClose();
         })
     }

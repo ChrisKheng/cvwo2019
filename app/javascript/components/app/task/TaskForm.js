@@ -39,10 +39,12 @@ const TaskForm = (props) => {
     }
 
     // title, description, selectedTags are state objects used to track the values of the input fields of the form.
+    // isCreatingTag is used to synchronise between creating tag action and submitting form action.
     const [title, setTitle] = useState(initialContent.title);
     const [description, setDescription] = useState(initialContent.description);
     const [selectedTags, setSelectedTags] = useState(initialContent.tags);
     const [isTagInvalid, setIsTagInvalid] = useState(false);
+    const [isCreatingTag, setIsCreatingTag] = useState(false);
 
     //============================================== Handle Input Change ==============================================
     const handleTitleChanged = (event) => {
@@ -80,18 +82,25 @@ const TaskForm = (props) => {
         // to create the tag and perform necessary follow-up actions.
         const isNewTag = props.tagsProps.tags.find(tag => tag.label === newItem.label) === undefined;
         if (isNewTag) {
+            // Disables the submit button of the form
+            setIsCreatingTag(true);
+
             axios.post('/categories', {
                 category: { label: newItem.label }
             }).then((result) => {
                 // Update the added tag object with the tag object sent by the server
                 // in user selections for both the typeahead component and the internal state.
                 selections.splice(length - 1, 1, result.data);
+                console.log(selections)
                 setSelectedTags(selections);
                 props.tagsProps.onNewTagCreated(result.data);
             }).catch(error => {
                 // Remove the added tag object from the user selections for the typeahead component.
                 selections.splice(length - 1, 1);
                 props.tagsProps.onNewTagFail(error.message);
+            }).finally(() => {
+                // Re-enables the submit button of the form
+                setIsCreatingTag(false);
             })
         } else {
             // The added tag is a tag that already exists.
@@ -108,6 +117,7 @@ const TaskForm = (props) => {
      */
     const handleSubmit = (event) => {
         event.preventDefault();
+        console.log(selectedTags)
         const task = {
             title: title.trim(),
             description: description.trim(),
@@ -144,7 +154,7 @@ const TaskForm = (props) => {
 
         return errorCount === 0;
     };
-
+    
     return (
         <Form onSubmit={handleSubmit}>
             <FormGroup>
@@ -184,6 +194,11 @@ const TaskForm = (props) => {
                     newSelectionPrefix="Create new tag: "
                     onChange={handleTagsChanged}
                     selected={selectedTags} />
+                <Form.Text
+                    className="text-muted"
+                    style={!isCreatingTag ? {display: "none"} : {}}>
+                    Creating tag ...
+                </Form.Text>
                 <Form.Control.Feedback
                     type="invalid"
                     className="custom-invalid-feedback"
@@ -192,7 +207,7 @@ const TaskForm = (props) => {
                 </Form.Control.Feedback>
             </FormGroup>
 
-            <Button variant="primary" type="submit">
+            <Button variant="primary" type="submit" disabled={isCreatingTag}>
                 Submit
             </Button>
         </Form>
