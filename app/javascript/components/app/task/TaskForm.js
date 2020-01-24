@@ -91,7 +91,6 @@ const TaskForm = (props) => {
                 // Update the added tag object with the tag object sent by the server
                 // in user selections for both the typeahead component and the internal state.
                 selections.splice(length - 1, 1, result.data);
-                console.log(selections)
                 setSelectedTags(selections);
                 props.tagsProps.onNewTagCreated(result.data);
             }).catch(error => {
@@ -117,7 +116,6 @@ const TaskForm = (props) => {
      */
     const handleSubmit = (event) => {
         event.preventDefault();
-        console.log(selectedTags)
         const task = {
             title: title.trim(),
             description: description.trim(),
