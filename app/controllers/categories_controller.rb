@@ -8,7 +8,7 @@ class CategoriesController < ApplicationController
     # under the javascript folder.
     def index
         @categories =  Category.all
-        response = @categories.map{|category| getCategoryHash(category)}
+        response = @categories.map{|category| get_category_hash(category)}
         render json: response
     end
     
@@ -17,7 +17,7 @@ class CategoriesController < ApplicationController
     def create
         @category = Category.new(category_param)
         if @category.save
-            render json: getCategoryHash(@category)
+            render json: get_category_hash(@category)
         else
             render json: @category.errors.full_messages
         end    
@@ -27,7 +27,7 @@ class CategoriesController < ApplicationController
     # to the client if the action is successful. Otherwise, returns the error messages to the client.
     def update
         if @category.update(category_param)
-            render json: getCategoryHash(@category)
+            render json: get_category_hash(@category)
         else
             render json: @category.errors.full_messages
         end    
@@ -47,7 +47,7 @@ class CategoriesController < ApplicationController
 
     # Returns a custom hash representing the given category object. The attributes of the hash is the same as that of
     # a category object except the key "name" is changed to "label" instead for front-end's need.
-    def getCategoryHash(category)
+    def get_category_hash(category)
         hash = category.attributes
         hash["label"] = hash.delete "name"
         hash

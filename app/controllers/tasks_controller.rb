@@ -8,7 +8,7 @@ class TasksController < ApplicationController
   # under the javascript folder.
   def index
     @tasks = Task.all
-    response = @tasks.map{|task| getTaskHash(task)}
+    response = @tasks.map{|task| get_task_hash(task)}
     render json: response
   end
 
@@ -17,7 +17,7 @@ class TasksController < ApplicationController
   def create
     @task = Task.new(task_param)
     if @task.save
-      render json: getTaskHash(@task)
+      render json: get_task_hash(@task)
     else
       render json: @task.errors.full_messages  
     end
@@ -27,7 +27,7 @@ class TasksController < ApplicationController
   # to the client if the action is successful. Otherwise, returns the error messages to the client.
   def update
     if @task.update(task_param)
-      render json: getTaskHash(@task)
+      render json: get_task_hash(@task)
     else
       render json: @task.errors.full_messages
     end
@@ -46,7 +46,7 @@ class TasksController < ApplicationController
 
   # Returns a custom hash representing the given task object. The attributes of the hash is the same as that of
   # a task object except the hash contains a "tags" attribute which is an array of tags assigned to the task.
-  def getTaskHash(task)
+  def get_task_hash(task)
     hash = task.attributes
     hash["tags"] = task.categories.to_ary.map{|category|
       attributes = category.attributes
