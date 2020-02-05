@@ -1,4 +1,6 @@
-Hey there! This is the documentation for the app DoIt!
+Hey there! This is the documentation for the app DoIt! It mainly consists of documentation on the architecture of the
+system. Please refer to the documentation in the respective code file should you want to know more information about
+a specific controller, React component, etc.
 
 ## Overall System Architecture
 The application is built using Ruby on Rails as backend and React as front-end, following the Model-View-Controller (MVC)
