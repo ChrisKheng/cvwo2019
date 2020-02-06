@@ -26,7 +26,7 @@ class Tasks extends React.Component {
      * variant: Type of the alert message. Refers to React-Bootstrap alert API.
      * content: Message to be displayed in the alert message.
      * isRedirectToAllTasks: A boolean which determines whether to redirect to the master tasks page all the tasks.
-     */ 
+     */
     state = {
         tasks: [],
         visibleTasks: [],
@@ -232,36 +232,42 @@ class Tasks extends React.Component {
     }
 
     /**
+     * Returns true if the page is FilteredTasksPage.
+     */
+    isFilteredTasksPage = () => {
+        const { match: { params } } = this.props;
+        return params.tagId !== undefined;
+    }
+
+    /**
      * Returns the respective tag object for the use of the Title component.
      * If the page is master tasks page, returns { id: null, label: "All Tasks" } as the tag object.
-     * Else, returns the tag object accordingly and filter all the tasks such that only tasks belong to the tag
-     * are displayed.
      */
     getTitleTag = () => {
         let titleTag = undefined;
-        this.state.visibleTasks = this.state.tasks;
-
         const { match: { params } } = this.props;
-        const isFilteredTasksPage = params.tagId !== undefined;
 
-        if (isFilteredTasksPage) {
+        if (this.isFilteredTasksPage()) {
             const id = parseInt(params.tagId);
             titleTag = this.state.tags.find(tag => tag.id === id);
-
-            // Sets visibleTasks to the array of tasks that belong to the tag specfied.
-            // isFinishedLoading: true if all the tasks and tags have been fetched from the server succeffully.
-            // titleTag will be undefined if the tasks and tags have not been fetched from the server.
-            const isFinishedLoading = titleTag !== undefined;
-            if (isFinishedLoading) {
-                this.state.visibleTasks = this.state.tasks.filter(task => {
-                    return task.tags.find(tag => tag.id === titleTag.id) !== undefined;
-                });
-            }
         } else {
             titleTag = { id: null, label: "All Tasks" };
         }
 
         return titleTag;
+    }
+
+    /**
+     * Sets visibleTasks to the array of tasks that belong to the tag given.
+     */
+    setVisibleTasks = (titleTag) => {
+        if (!this.isFilteredTasksPage()) {
+            this.state.visibleTasks = this.state.tasks;
+        } else {
+            this.state.visibleTasks = this.state.tasks.filter(task => {
+                return task.tags.find(tag => tag.id === titleTag.id) !== undefined;
+            });
+        }
     }
 
     render() {
@@ -271,10 +277,14 @@ class Tasks extends React.Component {
         }
 
         // To load the title and tasks of the page according to the tag specified if any.
+        // isFinishedLoading: true if all the tasks and tags have been fetched from the server succeffully.
+        // titleTag will be undefined if the tasks and tags have not been fetched from the server.
         let titleTag = this.getTitleTag();
         const isFinishedLoading = titleTag !== undefined;
         if (!isFinishedLoading) {
             return <div />
+        } else {
+            this.setVisibleTasks(titleTag);
         }
 
         const tagsProps = {
