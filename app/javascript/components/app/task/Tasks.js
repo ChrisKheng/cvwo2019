@@ -233,7 +233,9 @@ class Tasks extends React.Component {
 
     /**
      * Returns the respective tag object for the use of the Title component.
-     * If the page is master tasks page, return { id: null, label: "All Tasks" } as the tag object.
+     * If the page is master tasks page, returns { id: null, label: "All Tasks" } as the tag object.
+     * Else, returns the tag object accordingly and filter all the tasks such that only tasks belong to the tag
+     * are displayed.
      */
     getTitleTag = () => {
         let titleTag = undefined;
