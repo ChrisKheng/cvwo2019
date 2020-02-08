@@ -62,10 +62,10 @@ a task.
 * DeleteTag: A dialog which allows the user to delete a category. 
 * TasksList: The list of tasks shown in the tasks page.
 * NewTask, EditTask, DeleteTask: A dialog which allows the user to create, edit, and delete a task respectively.
-* TaskNavigationBar: The navigation bar of the tasks page.
+* TaskNavigationBar: The navigation bar of the tasks page. It uses `NavigationBar` as its parent component.
 
 Below are other important components which are not shown in the diagrams.
-* TaskForm: A form which is used to create / edit a task.
+* TaskForm: A form which is used to create/edit a task.
 * ConfirmationDialog: A dialog which asks for the user's confirmation.
 * Modal: A general-purpose dialog which can be used by other components.
 
@@ -77,7 +77,7 @@ by the user in JSON format. The application processes and stores all the tasks o
 to be displayed.
 
 ## Displaying Tasks According to Tag
-The application first fetches all the tasks from the server and store them. Then, using the specified tag, the
+The application first fetches all the tasks and tags from the server and store them. Then, using the specified tag, the
 application filters the tasks according to the specified tag such that only tasks belong to the tag are displayed.
 
 
