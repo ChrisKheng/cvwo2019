@@ -54,7 +54,7 @@ Application landing page is the page which shows all the tasks.
 * App: Parent component of the application.
 * Routes: A component which defines all the routes within the application.
 * NavigationBar: The tak bar at the top of the application.
-* Task: The tasks page.
+* Tasks: The tasks page.
 * Alert: An alert dialog which shows relevant messages to the user after performing certain actions, e.g. creating
 a task.
 * Title: The title of the page.
